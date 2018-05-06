@@ -21,7 +21,7 @@
     </button>
   </div>
 </mat-toolbar>
-<div id="map"> <heat-map> </heat-map> </div>
+<div id="map" mouseWheel (mouseWheelUp)="zoomOut(event)" (mouseWheelDown)="zoomIn(event)"> <heat-map> </heat-map> </div>
 
 <!--overlay section-->
 <div class="modal-overlay" [class.show]="showSideMenu" (click)="toggleSideMenu()" >

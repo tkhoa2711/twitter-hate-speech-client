@@ -8,6 +8,7 @@ import * as topojson from "topojson-client";
 @Injectable()
 export class HeatMapService{
     private url = 'http://hate-speech.local/topojson/world.json';
+    private twitterDataServerUrl = 'http://139.59.110.130:5000';
     private socket;
 
     constructor (private _http:Http){
@@ -23,6 +24,15 @@ export class HeatMapService{
             .catch(this.handleError);
 
     }
+
+    getTwitterData(): Promise<any> {
+        let twitterDataPromise = this._http.get(`${this.twitterDataServerUrl}/tweets`, { withCredentials: true }).toPromise();
+        twitterDataPromise.then(requestResult => {
+          // console.log(this.cart);
+          console.log(requestResult.json());
+        });
+        return twitterDataPromise;
+      }
 
     private extractData(res: Response){
         let body=res.json();

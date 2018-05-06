@@ -1,8 +1,9 @@
-import { Component, OnInit, ElementRef, Input  } from '@angular/core';
+import { Component, OnInit, ElementRef, Input, OnDestroy  } from '@angular/core';
 import * as D3 from 'd3/index';
 import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/catch';
 
+import { AppService } from '../app.service';
 import { HeatMapService } from './heat-map.service';
 // import { Tweet } from '../shared/tweet';
 
@@ -11,7 +12,7 @@ import { HeatMapService } from './heat-map.service';
   templateUrl: './heat-map.component.html',
   styleUrls: ['./heat-map.component.css']
 })
-export class HeatMapComponent implements OnInit {
+export class HeatMapComponent implements OnInit, OnDestroy {
   @Input()
   twitterState: any;
   errorMessage: string;
@@ -24,20 +25,51 @@ export class HeatMapComponent implements OnInit {
   projection;
   path;
   svg;
+  g;
   width;
   centered;
 
   zoomSettings = {
     duration:1000,
     ease: D3.easeCubicOut,
-    zoomLevel: 5
+    zoomLevel: 4
   }
+  zoomUpdateSubscription;
 
-  constructor (private _element: ElementRef, private _mapService: HeatMapService) {
+  constructor (private appService: AppService,
+              private _element: ElementRef, 
+              private _mapService: HeatMapService) {
     this.host = D3.select(this._element.nativeElement);
     this.getMapData();
     this.setup();
     this.buildSVG();
+    this.zoomUpdateSubscription = this.appService.zoomChange.subscribe(
+      (zoomChange) => {
+        if(zoomChange==='in'){
+          this.zoomSettings.zoomLevel += 0.5;
+          
+        }else{
+          this.zoomSettings.zoomLevel -= 0.5;
+        }
+        let x = this.width / 2;
+        let y = this.height / 2;
+        if(this.centered !== null){
+          var centroid = this.path.centroid(this.centered );
+          x = centroid[0];
+          y = centroid[1];
+        }
+        this.g.transition().duration(this.zoomSettings.duration)
+                  .ease(this.zoomSettings.ease)
+                  .attr('transform',
+                        //'translate(scale('+this.zoomSettings.zoomLevel+'))');
+                        'translate('+ this.width/2 + ','+ this.height/2  +')scale('+this.zoomSettings.zoomLevel+')translate('+ -x + ',' + -y +')');
+      }
+    );
+    this._mapService.getTwitterData();
+  }
+
+  ngOnDestroy(){
+    this.appService.zoomChange.unsubscribe();
   }
 
   ngOnInit(){
@@ -76,16 +108,17 @@ export class HeatMapComponent implements OnInit {
     this.svg = this.host.append('svg')
       .attr('class','map-container')
       .attr('width', this.width + this.margin.left + this.margin.right)
-      .attr('height', this.height + this.margin.top + this.margin.bottom)
-      .append('g')
-      .attr('transform', 'translate(' + this.margin.left + ',' + this.margin.top + ')');
+      .attr('height', this.height + this.margin.top + this.margin.bottom);
+    
+    this.g = this.svg.append('g');
+    //this.g.attr('transform', 'translate(' + this.margin.left + ',' + this.margin.top + ')');
     
       // append a rect
-      this.svg.append('rect')
+      /*this.svg.append('rect')
               .attr('class', 'background')
               .attr('width', this.width)
               .attr('height', this.height)
-              .on('click', this.countriesClicked );
+              .on('click', this.countrysClicked );*/
   }
 
   setMap(mapData) {
@@ -114,15 +147,34 @@ export class HeatMapComponent implements OnInit {
     // set the color schematic
     /*# d3.interpolateRdYlGn(t) <> 
     # d3.schemeRdYlGn[k]*/
+    var heatMapComponentScope = this;
 
-    this.svg.selectAll('.country')
+    this.g.append('g')
+      .selectAll('path')
+      .data(this.mapData)
+      .enter().append('path')
+      .attr('d', this.path)
+      .attr('class', 'country')
+      .style('stroke', '#d5d8db')
+      .style('stroke-width', '1')
+      .style('fill', '#e8e8e8')
+      .on('click', function(d){
+        heatMapComponentScope.countryClicked(heatMapComponentScope,d);
+        // console.log(heatMapComponentObject.path)
+      });
+
+    /*this.svg.selectAll('.country')
       .data(this.mapData)
       .enter().append('path')
         .attr('d', this.path)
         .attr('class', 'country')
         .style('stroke', '#d5d8db')
         .style('stroke-width', '1')
-        .style('fill', '#e8e8e8');
+        .style('fill', '#e8e8e8')
+        .on('click', function(d){
+          heatMapComponentScope.countryClicked(heatMapComponentScope,d);
+          // console.log(heatMapComponentObject.path)
+        });*/
         /*.attr('fill',function(d){
           var countryDensity = d.properties.density;
           var density = countryDensity ? countryDensity : 0;
@@ -178,30 +230,31 @@ export class HeatMapComponent implements OnInit {
           .text(d => 'Location: ' + d.coords);*/
   }
 
-  countriesClicked(d):void {
+  countryClicked(heatMapComponentScope, d):void {
     var x;
     var y;
     var zoomLevel;
     //var centered;
-    console.log("in");
 
-    if (d && this.centered !== d){
-      var centroid = this.path.centroid(d);
+    if (d && heatMapComponentScope.centered !== d){
+
+      var centroid = heatMapComponentScope.path.centroid(d);
       x = centroid[0];
       y = centroid[1];
-      zoomLevel = this.zoomSettings.zoomLevel;
-      this.centered =  d;
+      zoomLevel = heatMapComponentScope.zoomSettings.zoomLevel;
+      heatMapComponentScope.centered =  d;
+      //console.log(x+','+y);
     } else {
-      x = this.width / 2;
-      y = this.height / 2;
+      x = heatMapComponentScope.width / 2;
+      y = heatMapComponentScope.height / 2;
       zoomLevel = 1;
-      this.centered = null;
+      heatMapComponentScope.centered = null;
     }
-
-    this.svg.transition().duration(this.zoomSettings.duration)
-                  .ease(this.zoomSettings.ease)
+    //console.log(x+','+y);
+    heatMapComponentScope.g.transition().duration(heatMapComponentScope.zoomSettings.duration)
+                  .ease(heatMapComponentScope.zoomSettings.ease)
                   .attr('transform',
-                        'translate('+ this.width/2 + ','+ this.height/2  +')scale('+zoomLevel+')translate('+ -x + ',' + -y +')');
+                        'translate('+ heatMapComponentScope.width/2 + ','+ heatMapComponentScope.height/2  +')scale('+zoomLevel+')translate('+ -x + ',' + -y +')');
   }
 
 }

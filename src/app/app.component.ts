@@ -6,6 +6,8 @@ import { HeatMapComponent } from './heat-map/heat-map.component';
 import * as D3 from 'd3/index';
 import { HttpClient } from '@angular/common/http';
 
+import { AppService } from './app.service';
+
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
@@ -53,7 +55,8 @@ export class AppComponent implements OnInit {
     {id: 'U', label: 'Unspecified'}
   ];
 
-  constructor(private _element: ElementRef, 
+  constructor(private appService: AppService,
+              private _element: ElementRef, 
               private formBuilder: FormBuilder,
               private adapter: DateAdapter<any>){
     //this.host = D3.select(this._element.nativeElement);
@@ -108,5 +111,14 @@ export class AppComponent implements OnInit {
   resetFilterForm(){
     this.filterForm.reset();
     this.selectedGenders =['M','F','U'];
+  }
+
+  zoomOut(event){
+    // console.log('goin up');
+    this.appService.zoomLevelChanged('out');
+  }
+  zoomIn(event){
+    // console.log('goin down');
+    this.appService.zoomLevelChanged('in');
   }
 }

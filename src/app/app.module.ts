@@ -18,7 +18,9 @@ import { MatButtonModule,
 import { FlexLayoutModule } from "@angular/flex-layout";
 import { TagInputModule } from 'ngx-chips';
 
+import { MouseWheelDirective } from './directives/mousewheel.directive';
 import { AppComponent } from './app.component';
+import { AppService } from './app.service';
 import { HeatMapComponent } from './heat-map/heat-map.component';
 import { HeatMapService } from './heat-map/heat-map.service';
 
@@ -26,7 +28,8 @@ import { HeatMapService } from './heat-map/heat-map.service';
 @NgModule({
   declarations: [
     AppComponent,
-    HeatMapComponent
+    HeatMapComponent,
+    MouseWheelDirective
   ],
   imports: [
     BrowserModule,
@@ -48,7 +51,7 @@ import { HeatMapService } from './heat-map/heat-map.service';
     MatProgressSpinnerModule,
     TagInputModule, 
   ],
-  providers: [ HeatMapService ],
+  providers: [ AppService, HeatMapService ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
