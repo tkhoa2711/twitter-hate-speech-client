@@ -25,6 +25,13 @@ export class HeatMapComponent implements OnInit {
   path;
   svg;
   width;
+  centered;
+
+  zoomSettings = {
+    duration:1000,
+    ease: D3.easeCubicOut,
+    zoomLevel: 5
+  }
 
   constructor (private _element: ElementRef, private _mapService: HeatMapService) {
     this.host = D3.select(this._element.nativeElement);
@@ -72,15 +79,41 @@ export class HeatMapComponent implements OnInit {
       .attr('height', this.height + this.margin.top + this.margin.bottom)
       .append('g')
       .attr('transform', 'translate(' + this.margin.left + ',' + this.margin.top + ')');
+    
+      // append a rect
+      this.svg.append('rect')
+              .attr('class', 'background')
+              .attr('width', this.width)
+              .attr('height', this.height)
+              .on('click', this.countriesClicked );
   }
 
   setMap(mapData) {
     this.mapData = mapData;
+
+    // define projection
     this.projection = D3.geoMercator()
       .translate([this.width /2 , this.height /2 ])
       .scale(210);
+    
+    // apply the projection
     this.path = D3.geoPath()
       .projection(this.projection);
+/*
+    // find the max value
+    var meanDensity:number = +D3.mean(mapData, function(d){
+      return d.properties.density;
+    });
+
+    // normalise the value
+    var scaleDensity = D3.scaleLinear().domain([0, meanDensity]).range([0,1]);
+
+    // setup the color function
+    var color = D3.scaleSequential(D3.interpolateRdYlGn);*/
+
+    // set the color schematic
+    /*# d3.interpolateRdYlGn(t) <> 
+    # d3.schemeRdYlGn[k]*/
 
     this.svg.selectAll('.country')
       .data(this.mapData)
@@ -90,6 +123,16 @@ export class HeatMapComponent implements OnInit {
         .style('stroke', '#d5d8db')
         .style('stroke-width', '1')
         .style('fill', '#e8e8e8');
+        /*.attr('fill',function(d){
+          var countryDensity = d.properties.density;
+          var density = countryDensity ? countryDensity : 0;
+          // return color(scaleDensity(density))
+          if(countryDensity > 200){
+            return 'red';
+          } else {
+            return 'green';
+          }
+        });*/
 
     /*this.svg.selectAll('path')
       .data(this.mapData.features)
@@ -133,6 +176,32 @@ export class HeatMapComponent implements OnInit {
         })
         .append('title')
           .text(d => 'Location: ' + d.coords);*/
+  }
+
+  countriesClicked(d):void {
+    var x;
+    var y;
+    var zoomLevel;
+    //var centered;
+    console.log("in");
+
+    if (d && this.centered !== d){
+      var centroid = this.path.centroid(d);
+      x = centroid[0];
+      y = centroid[1];
+      zoomLevel = this.zoomSettings.zoomLevel;
+      this.centered =  d;
+    } else {
+      x = this.width / 2;
+      y = this.height / 2;
+      zoomLevel = 1;
+      this.centered = null;
+    }
+
+    this.svg.transition().duration(this.zoomSettings.duration)
+                  .ease(this.zoomSettings.ease)
+                  .attr('transform',
+                        'translate('+ this.width/2 + ','+ this.height/2  +')scale('+zoomLevel+')translate('+ -x + ',' + -y +')');
   }
 
 }

@@ -1,5 +1,7 @@
 import { Component, ElementRef, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { FormBuilder, FormGroup, FormControl, Validators } from '@angular/forms';
+import { MAT_MOMENT_DATE_FORMATS, MomentDateAdapter } from '@angular/material-moment-adapter';
+import { DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE } from '@angular/material/core';
 import { HeatMapComponent } from './heat-map/heat-map.component';
 import * as D3 from 'd3/index';
 import { HttpClient } from '@angular/common/http';
@@ -7,7 +9,18 @@ import { HttpClient } from '@angular/common/http';
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
-  styleUrls: ['./app.component.css']
+  styleUrls: ['./app.component.css'],
+  providers: [
+    // The locale would typically be provided on the root module of your application. We do it at
+    // the component level here, due to limitations of our example generation script.
+    {provide: MAT_DATE_LOCALE, useValue: 'ja-JP'},
+
+    // `MomentDateAdapter` and `MAT_MOMENT_DATE_FORMATS` can be automatically provided by importing
+    // `MatMomentDateModule` in your applications root module. We provide it at the component level
+    // here, due to limitations of our example generation script.
+    {provide: DateAdapter, useClass: MomentDateAdapter, deps: [MAT_DATE_LOCALE]},
+    {provide: MAT_DATE_FORMATS, useValue: MAT_MOMENT_DATE_FORMATS},
+  ]
 })
 export class AppComponent implements OnInit {
   title = 'app';
@@ -16,12 +29,36 @@ export class AppComponent implements OnInit {
   svg;
   showSideMenu: Boolean = true;
 
+  // selectedGenders =[
+  //   {id: 'M', label: 'Male'},
+  //   {id: 'F', label: 'Female'},
+  //   {id: 'U', label: 'Unspecified'}
+  // ];
+
+  selectedGenders =['M','F','U'];
+
   // filter form
   filterForm: FormGroup;
 
-  constructor(private _element: ElementRef, private formBuilder: FormBuilder){
+  // static values
+  minEndDate;
+  hateSpeechCategories = [
+    {id: '0', label: 'Racial'},
+    {id: '1', label: 'Class'},
+    {id: '2', label: 'Mysogynist'}
+  ];
+  genders = [
+    {id: 'M', label: 'Male'},
+    {id: 'F', label: 'Female'},
+    {id: 'U', label: 'Unspecified'}
+  ];
+
+  constructor(private _element: ElementRef, 
+              private formBuilder: FormBuilder,
+              private adapter: DateAdapter<any>){
     //this.host = D3.select(this._element.nativeElement);
     this.createForm();
+    this.adapter.setLocale('en-gb');
   }
 
   ngOnInit(){
@@ -29,10 +66,25 @@ export class AppComponent implements OnInit {
     this.showSideMenu = false;
   }
 
+  compareWithSelected(a, b) {
+    return a === b;
+  }
+
   createForm() {
     this.filterForm = this.formBuilder.group({
-      name: '', // <--- the FormControl called "name"
+      startDate: ['', Validators.required],
+      endDate: ['', Validators.required],
+      category: [''],
+      gender: [''],
+      mention: [''],
+      keywords: new FormControl('', []),
+      hashtags: [''], // <--- the FormControl called "name"
     });
+  }
+
+  setMinEndDate(event: any){
+    // console.log(event.value.toDate());
+    this.minEndDate = event.value.toDate();
   }
 
   buildSVG(): void{
@@ -45,5 +97,16 @@ export class AppComponent implements OnInit {
 
   toggleSideMenu(){
     this.showSideMenu = !this.showSideMenu;
+  }
+
+  getTweetData(filterData:any){
+    // console.log(filterData);
+    // console.log(filterData.startDate.valueOf());
+    // console.log(filterData.endDate.valueOf());
+  }
+
+  resetFilterForm(){
+    this.filterForm.reset();
+    this.selectedGenders =['M','F','U'];
   }
 }

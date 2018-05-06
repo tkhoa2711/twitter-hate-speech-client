@@ -55,14 +55,41 @@ body{
     height:100%;
     padding:1em;
 }
+.filter-form button{
+    margin-top:8px;
+}
+
+.filter-form tag-input{
+    margin-bottom: 16px;
+}
+.filter-form tag-input input{
+    padding:0px !important;
+}
+.filter-form tag-input input::placeholder {
+    color: rgba(0,0,0,.54);;
+}
+.filter-form tag-input input:-ms-input-placeholder { 
+    color: rgba(0,0,0,.54);;
+}
+.filter-form tag-input input::-ms-input-placeholder {
+    color: rgba(0,0,0,.54);;
+}
 
 /*--- the heat map module ----*/
 heat-map .map-container{
     background: #aadaff;
     max-width: 100%;
+    -webkit-transition: all 500ms;
+    -moz-transition: all 500ms;
+    -o-transition: all 500ms;
+    transition: all 500ms;
 }
 
 heat-map .map-container .country:hover{
-    fill: rgb(255, 232, 232) !important;
+    fill: rgba(127, 127, 127,0.5) !important;
     cursor: pointer;
+    -webkit-transition: all 500ms;
+    -moz-transition: all 500ms;
+    -o-transition: all 500ms;
+    transition: all 500ms;
 }

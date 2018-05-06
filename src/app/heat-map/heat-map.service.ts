@@ -17,7 +17,7 @@ export class HeatMapService{
     getMapData(): Observable<any>{
 
     
-       setTimeout(this._http.get('http://localhost:5000/'),5000);
+       //setTimeout(this._http.get('http://localhost:5000/'),5000);
         return this._http.get(this.url)
             .map(this.extractData)
             .catch(this.handleError);
@@ -27,6 +27,7 @@ export class HeatMapService{
     private extractData(res: Response){
         let body=res.json();
         let countriesData = topojson.feature(body,body.objects.countries).features;
+        console.log(countriesData);
         return countriesData || {};
         //return body.data || {};
     }

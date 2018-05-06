@@ -27,37 +27,50 @@
 <div class="modal-overlay" [class.show]="showSideMenu" (click)="toggleSideMenu()" >
 </div>
 <div class="side-menu mat-elevation-z8" [class.show]="showSideMenu"  >
-  <form [formGroup]="filterForm" fxLayout="column" class="filter-form">
+  <form [formGroup]="filterForm" fxLayout="column" class="filter-form" (ngSubmit)="getTweetData(filterForm.value)" novalidate>
     <mat-form-field>
-      <input matInput [matDatepicker]="startDate" placeholder="Start date">
+      <input matInput [matDatepicker]="startDate"  name="startDate"  placeholder="Start date" [formControl]="filterForm.controls['startDate']" (dateInput)="setMinEndDate($event)" (dateChange)="setMinEndDate($event)">
       <mat-datepicker-toggle matSuffix [for]="startDate"></mat-datepicker-toggle>
-      <mat-datepicker #startDate startView="year" [startAt]="startDate"></mat-datepicker>
+      <mat-datepicker #startDate startView="month" [startAt]="startDate"></mat-datepicker>
+      <mat-hint *ngIf="filterForm.controls['startDate'].touched && filterForm.controls['startDate'].invalid" [ngStyle]="{'color': 'red'}">
+          This field is required </mat-hint>
     </mat-form-field>
     <mat-form-field>
-      <input matInput [matDatepicker]="endDate" placeholder="End Date">
+      <input matInput [matDatepicker]="endDate"  name="endDate" placeholder="End Date" [formControl]="filterForm.controls['endDate']"  [min]="minEndDate">
         <mat-datepicker-toggle matSuffix [for]="endDate"></mat-datepicker-toggle>
-        <mat-datepicker #endDate startView="year" [startAt]="startDate"></mat-datepicker>
+        <mat-datepicker #endDate startView="month" [startAt]="minEndDate"></mat-datepicker>
+        <mat-hint *ngIf="filterForm.controls['endDate'].touched && filterForm.controls['endDate'].invalid" [ngStyle]="{'color': 'red'}">
+            This field is required </mat-hint>
     </mat-form-field>
     <mat-form-field>
-        <input matInput placeholder="Category" value="">
-      </mat-form-field>
-      <mat-form-field>
-          <input matInput placeholder="Gender" value="">
-        </mat-form-field>
-        <mat-form-field>
-            <input matInput placeholder="Mention" value="">
-          </mat-form-field>
-    <mat-form-field>
-      <input matInput placeholder="Keyword" value="">
+      <mat-select placeholder="Category" name="category" [formControl]="filterForm.controls['category']" multiple>
+        <mat-option *ngFor="let hateSpeechCategory of hateSpeechCategories" [value]="hateSpeechCategory.id">
+          {{ hateSpeechCategory.label }}
+        </mat-option>
+      </mat-select>
     </mat-form-field>
     <mat-form-field>
-      <input matInput placeholder="Hashtag" value="">
+      <mat-select placeholder="Gender" name="gender" [formControl]="filterForm.controls['gender']" [(ngModel)]="selectedGenders" [compareWith]="compareWithSelected" multiple>
+        <mat-option *ngFor="let gender of genders" [value]="gender.id">
+          {{ gender.label }}
+        </mat-option>
+      </mat-select>
     </mat-form-field>
-    <!-- <div class="form-group">
-      <label class="center-block">Name:
-        <input class="form-control" formControlName="name">
-      </label>
-      <p>Form value: {{ filterForm.value | json }}</p>
-    </div> -->
+    <mat-form-field>
+      <input matInput name="mention" placeholder="Mention" value="" [formControl]="filterForm.controls['mention']">
+    </mat-form-field>
+    <mat-form-field>
+      <input matInput name="keywords" placeholder="Keywords" value="" [formControl]="filterForm.controls['keywords']">
+    </mat-form-field>
+    <!-- <mat-form-field>
+      <input matInput name="hashtags" placeholder="Hashtags" value="" [formControl]="filterForm.controls['hashtags']">
+    </mat-form-field> -->
+    <tag-input #hashtags name="hashtags" [ngModel]="items" 
+    formControlName="hashtags" [modelAsStrings]="true"></tag-input>
+    
+    <button mat-raised-button color="primary" type="submit">Filter</button>
+    <button mat-button color="accent" type="button" (click)="resetFilterForm()">Reset</button>
   </form>
+
+  
 </div>
