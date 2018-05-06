@@ -1,0 +1,63 @@
+<mat-toolbar  fxLayout="row" fxLayoutAlign="space-between center" class="header">
+  <div class="app-name">
+    Twitter Hate Speech Detector
+  </div>
+  <div class="menu">
+    <button mat-button>
+      <mat-icon>public</mat-icon>
+      Map
+    </button>
+    <button mat-button>
+      <mat-icon>get_app</mat-icon>
+      Export
+    </button>
+    <button mat-button>
+      <mat-icon>settings</mat-icon>
+      Admin
+    </button>
+    <button mat-button (click)="toggleSideMenu()">
+      <mat-icon>filter_list</mat-icon>
+      Filter
+    </button>
+  </div>
+</mat-toolbar>
+<div id="map"> <heat-map> </heat-map> </div>
+
+<!--overlay section-->
+<div class="modal-overlay" [class.show]="showSideMenu" (click)="toggleSideMenu()" >
+</div>
+<div class="side-menu mat-elevation-z8" [class.show]="showSideMenu"  >
+  <form [formGroup]="filterForm" fxLayout="column" class="filter-form">
+    <mat-form-field>
+      <input matInput [matDatepicker]="startDate" placeholder="Start date">
+      <mat-datepicker-toggle matSuffix [for]="startDate"></mat-datepicker-toggle>
+      <mat-datepicker #startDate startView="year" [startAt]="startDate"></mat-datepicker>
+    </mat-form-field>
+    <mat-form-field>
+      <input matInput [matDatepicker]="endDate" placeholder="End Date">
+        <mat-datepicker-toggle matSuffix [for]="endDate"></mat-datepicker-toggle>
+        <mat-datepicker #endDate startView="year" [startAt]="startDate"></mat-datepicker>
+    </mat-form-field>
+    <mat-form-field>
+        <input matInput placeholder="Category" value="">
+      </mat-form-field>
+      <mat-form-field>
+          <input matInput placeholder="Gender" value="">
+        </mat-form-field>
+        <mat-form-field>
+            <input matInput placeholder="Mention" value="">
+          </mat-form-field>
+    <mat-form-field>
+      <input matInput placeholder="Keyword" value="">
+    </mat-form-field>
+    <mat-form-field>
+      <input matInput placeholder="Hashtag" value="">
+    </mat-form-field>
+    <!-- <div class="form-group">
+      <label class="center-block">Name:
+        <input class="form-control" formControlName="name">
+      </label>
+      <p>Form value: {{ filterForm.value | json }}</p>
+    </div> -->
+  </form>
+</div>
