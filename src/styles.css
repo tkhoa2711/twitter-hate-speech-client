@@ -86,7 +86,8 @@ heat-map .map-container{
 }
 
 heat-map .map-container .country:hover{
-    fill: rgba(127, 127, 127,0.5) !important;
+    /* fill: rgba(127, 127, 127,0.5) !important; */
+    opacity:0.8;
     cursor: pointer;
     -webkit-transition: all 500ms;
     -moz-transition: all 500ms;
