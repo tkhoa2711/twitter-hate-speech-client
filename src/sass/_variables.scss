@@ -1,0 +1,27 @@
+$primary-font: "Arial", "Helvetica",  sans-serif;
+$break-small: 320px;
+$break-mobile: 800px;
+$break-large: 1200px;
+$site-max-width:1152px;
+$site-max-width-wo-padding:1132px;
+$container-padding:16px;
+$color-black:#000;
+$color-white:#fff;
+$color-dark-grey: #5e5e5e;
+$color-medium-grey: #bbbbbb;
+$color-light-grey: #efefef;
+
+/*-----flex layout breakpoints ------*/
+$screen-max-500: 500px;
+$screen-max-xs: 599px;
+$screen-max-900: 899px;
+$screen-max-sm: 959px;
+$screen-max-md: 1279px;
+$screen-max-lg: 1919px;
+$screen-max-xl: 5000px;
+
+$screen-min-sm: 600px;
+$screen-min-900: 900px;
+$screen-min-md: 960px;
+$screen-min-lg: 1280px;
+$screen-min-xl: 1920px;
