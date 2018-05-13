@@ -52,21 +52,28 @@ export class HeatMapComponent implements OnInit, OnDestroy {
     this.setup();
     this.buildSVG();
     this.getMapData();
-    this.zoomUpdateSubscription = this.appService.zoomChange.subscribe(
+    this.zoomUpdateSubscription = this._mapService.zoomChange.subscribe(
       (zoomChange) => {
         if(zoomChange==='in'){
           this.zoomSettings.zoomLevel += 0.5;
           
         }else{
-          this.zoomSettings.zoomLevel -= 0.5;
+          if(this.zoomSettings.zoomLevel>=1.5){
+            this.zoomSettings.zoomLevel -= 0.5;
+          }
         }
         let x = this.width / 2;
         let y = this.height / 2;
         if(this.centered !== null){
-          var centroid = this.path.centroid(this.centered );
+          var centroid = this.path.centroid(this.centered);
           x = centroid[0];
           y = centroid[1];
         }
+
+        console.log(document.querySelector('#page-container').clientWidth - this.margin.left - this.margin.right)
+        console.log(this.width * 0.6 - this.margin.bottom - this.margin.top);
+
+
         this.g.transition().duration(this.zoomSettings.duration)
                   .ease(this.zoomSettings.ease)
                   .attr('transform',
@@ -100,7 +107,7 @@ export class HeatMapComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(){
-    this.appService.zoomChange.unsubscribe();
+    this._mapService.zoomChange.unsubscribe();
   }
 
   ngOnInit(){
@@ -145,7 +152,7 @@ export class HeatMapComponent implements OnInit, OnDestroy {
       bottom: 40,
       left: 50
     };
-    this.width = document.querySelector('#map').clientWidth - this.margin.left - this.margin.right;
+    this.width = document.querySelector('#page-container').clientWidth - this.margin.left - this.margin.right;
     this.height = this.width * 0.6 - this.margin.bottom - this.margin.top;
     //this.width = "100%";
     //this.height="100%";

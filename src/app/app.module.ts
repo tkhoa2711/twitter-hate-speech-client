@@ -16,20 +16,28 @@ import { MatButtonModule,
         MatToolbarModule, 
         MatProgressSpinnerModule} from '@angular/material';
 import { FlexLayoutModule } from "@angular/flex-layout";
+import { RouterModule, PreloadAllModules } from '@angular/router';
 import { TagInputModule } from 'ngx-chips';
 
+
+import { AppConfig } from './app.config';
 import { MouseWheelDirective } from './directives/mousewheel.directive';
 import { AppComponent } from './app.component';
 import { AppService } from './app.service';
 import { HeatMapComponent } from './heat-map/heat-map.component';
 import { HeatMapService } from './heat-map/heat-map.service';
+import { ManageKeywordComponent } from './manage-keyword/manage-keyword.component';
+import { routes } from './app.routing';
+import { DashboardComponent } from './dashboard/dashboard.component';
 
 
 @NgModule({
   declarations: [
     AppComponent,
     HeatMapComponent,
-    MouseWheelDirective
+    MouseWheelDirective,
+    ManageKeywordComponent,
+    DashboardComponent
   ],
   imports: [
     BrowserModule,
@@ -49,9 +57,13 @@ import { HeatMapService } from './heat-map/heat-map.service';
     MatSelectModule,
     MatToolbarModule, 
     MatProgressSpinnerModule,
-    TagInputModule, 
+    TagInputModule,
+    RouterModule.forRoot(routes, {
+      useHash: false,
+      // preloadingStrategy: PreloadAllModules
+    }),
   ],
-  providers: [ AppService, HeatMapService ],
+  providers: [ AppConfig, AppService, HeatMapService ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

@@ -2,8 +2,7 @@ import { Component, ElementRef, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, FormControl, Validators } from '@angular/forms';
 import { MAT_MOMENT_DATE_FORMATS, MomentDateAdapter } from '@angular/material-moment-adapter';
 import { DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE } from '@angular/material/core';
-import { HeatMapComponent } from './heat-map/heat-map.component';
-import * as D3 from 'd3/index';
+
 import { HttpClient } from '@angular/common/http';
 
 import { AppService } from './app.service';
@@ -113,12 +112,16 @@ export class AppComponent implements OnInit {
     this.selectedGenders =['M','F','U'];
   }
 
-  zoomOut(event){
-    // console.log('goin up');
-    this.appService.zoomLevelChanged('out');
+  activateEvent(event) {
+    // if (ENV === 'development') {
+    //   console.log('Activate Event:', event);
+    // }
+    // window.scroll(0, 0);
   }
-  zoomIn(event){
-    // console.log('goin down');
-    this.appService.zoomLevelChanged('in');
+
+  deactivateEvent(event) {
+    // if (ENV === 'development') {
+    //   console.log('Deactivate Event', event);
+    // }
   }
 }

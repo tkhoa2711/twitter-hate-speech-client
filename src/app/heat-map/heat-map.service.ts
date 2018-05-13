@@ -1,34 +1,38 @@
 import { Http, Response } from '@angular/http';
-import { Injectable } from '@angular/core';
+import { Injectable, Output, EventEmitter } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
+
 import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/catch';
 import * as topojson from "topojson-client";
+import { AppConfig } from '../app.config';
 
 @Injectable()
 export class HeatMapService{
-    private mapDataUrl = 'http://hate-speech.local';
-    private twitterDataServerUrl = 'http://139.59.110.130:5000';
+    // private mapDataUrl = 'http://hate-speech.local';
+    // private twitterDataServerUrl = 'http://139.59.110.130:5000';
+    @Output() zoomChange: EventEmitter<any> = new EventEmitter();
     private socket;
 
-    constructor (private _http:Http){
-
+    constructor (private _http:Http,
+                 private appConfig: AppConfig){
+        
     }
 
     getMapData(): Observable<any>{
        //setTimeout(this._http.get('http://localhost:5000/'),5000);
-        return this._http.get(`${this.mapDataUrl}/topojson/world.json`)
+        return this._http.get(`${this.appConfig.MAP_DATA_URL}/topojson/world.json`)
             .map(this.extractData)
             .catch(this.handleError);
     }
 
     getStatesMapData(countryId:String): Promise<any> {
-        let statesMapDataPromise = this._http.get(`${this.mapDataUrl}/topojson/provinces/provinces_${countryId}.json`).toPromise();
+        let statesMapDataPromise = this._http.get(`${this.appConfig.MAP_DATA_URL}/topojson/provinces/provinces_${countryId}.json`).toPromise();
         return statesMapDataPromise;
     }
 
     getTwitterData(): Promise<any> {
-        let twitterDataPromise = this._http.get(`${this.twitterDataServerUrl}/tweets`, { withCredentials: true }).toPromise();
+        let twitterDataPromise = this._http.get(`${this.appConfig.API_URL}/tweets`, { withCredentials: true }).toPromise();
         return twitterDataPromise;
     }
 
@@ -45,5 +49,9 @@ export class HeatMapService{
             error.status ? `$(error.status) - $(error.statusText)` : `Server error`;
         console.error(errMsg);
         return Promise.reject(errMsg);
+    }
+
+    zoomLevelChanged(value:string){
+        this.zoomChange.emit(value);
     }
 }
