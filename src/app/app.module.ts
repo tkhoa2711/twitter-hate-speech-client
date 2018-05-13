@@ -6,6 +6,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { MAT_MOMENT_DATE_FORMATS, MomentDateAdapter } from '@angular/material-moment-adapter';
 import { MatButtonModule, 
+        MatCardModule,
         MatCheckboxModule,
         MatDatepickerModule, 
         MatNativeDateModule,
@@ -47,7 +48,8 @@ import { DashboardComponent } from './dashboard/dashboard.component';
     FlexLayoutModule,
     NoopAnimationsModule,
     ReactiveFormsModule,
-    MatButtonModule, 
+    MatButtonModule,
+    MatCardModule, 
     MatCheckboxModule,
     MatDatepickerModule, 
     MatNativeDateModule,

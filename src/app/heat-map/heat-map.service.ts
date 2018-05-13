@@ -12,6 +12,7 @@ export class HeatMapService{
     // private mapDataUrl = 'http://hate-speech.local';
     // private twitterDataServerUrl = 'http://139.59.110.130:5000';
     @Output() zoomChange: EventEmitter<any> = new EventEmitter();
+    @Output() tweetsDownloaded: EventEmitter<any> = new EventEmitter();
     private socket;
 
     constructor (private _http:Http,
@@ -32,7 +33,11 @@ export class HeatMapService{
     }
 
     getTwitterData(): Promise<any> {
-        let twitterDataPromise = this._http.get(`${this.appConfig.API_URL}/tweets`, { withCredentials: true }).toPromise();
+        let twitterDataPromise = this._http.get(`${this.appConfig.API_URL}/tweets?limit=300`, { withCredentials: true }).toPromise();
+        twitterDataPromise.then(requestResult => {
+            let rawTweets = requestResult.json();
+            this.tweetsDownloaded.emit(rawTweets);
+        });
         return twitterDataPromise;
     }
 
