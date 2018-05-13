@@ -35,6 +35,7 @@ export class HeatMapComponent implements OnInit, OnDestroy {
   tweetLayer;
   width;
   centered;
+  isLoading=true;
 
   zoomSettings = {
     duration:1000,
@@ -64,15 +65,11 @@ export class HeatMapComponent implements OnInit, OnDestroy {
         }
         let x = this.width / 2;
         let y = this.height / 2;
-        if(this.centered !== null){
+        if(this.centered != null){
           var centroid = this.path.centroid(this.centered);
           x = centroid[0];
           y = centroid[1];
         }
-
-        console.log(document.querySelector('#page-container').clientWidth - this.margin.left - this.margin.right)
-        console.log(this.width * 0.6 - this.margin.bottom - this.margin.top);
-
 
         this.g.transition().duration(this.zoomSettings.duration)
                   .ease(this.zoomSettings.ease)
@@ -87,6 +84,7 @@ export class HeatMapComponent implements OnInit, OnDestroy {
       }
     );
     //this._mapService.getTwitterData();
+
   }
 
   convertCityToIndexedArray(){
@@ -111,7 +109,7 @@ export class HeatMapComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(){
-
+    this.isLoading = true;
   }
 
   ngOnChanges() {
@@ -216,11 +214,14 @@ export class HeatMapComponent implements OnInit, OnDestroy {
       .enter().append('path')
       .attr('d', this.path)
       .attr('class', 'country')
+      .attr('id', function(d){
+       return d.properties.iso_a2
+      })
       .style('stroke', '#d5d8db')
       .style('stroke-width', '0.5')
       .style('fill', '#e8e8e8')
       .on('click', function(d){
-        //console.log(d);
+        // console.log(d);
         heatMapComponentScope.drawStates(heatMapComponentScope,d);
         heatMapComponentScope.countryClicked(heatMapComponentScope,d);
         // console.log(heatMapComponentObject.path)
@@ -257,7 +258,10 @@ export class HeatMapComponent implements OnInit, OnDestroy {
         .style('stroke-width', '1')
         .style('fill', 'lightgrey');*/
     // after finished setting up map
-    this.getTwitterData()
+
+    // temporary
+    // this.getTwitterData()
+    this.isLoading = false;
   }
 
   updateDots(tweets) {
@@ -309,6 +313,8 @@ export class HeatMapComponent implements OnInit, OnDestroy {
         })
         /*.append('title')
           .text(d => 'Location: ' + d.coords)*/
+
+    this.isLoading = false;
         
   }
   drawStates(heatMapComponentScope, d):void {
@@ -356,6 +362,29 @@ export class HeatMapComponent implements OnInit, OnDestroy {
           .attr("d",function (t) {
             return heatMapComponentScope.path(t);
           });
+      
+      /*heatMapComponentScope.g.selectAll(".state-name").remove();
+      heatMapComponentScope.g.selectAll(".state-name")
+                        .data(cleanedStatesMapData)
+                        .enter()
+                        .append("text")
+                        .attr('x', function(d) {
+                          return projection(d3.geo.centroid(d))[0];
+                        })
+                        .attr('y', function(d) {
+                          return projection(d3.geo.centroid(d))[1];
+                        })
+                        .attr('text-anchor', function(d, i) {
+                          // Randomly align the label
+                          var idx = Math.round(3 * Math.random());
+                          return ['start', 'middle', 'end'][idx];
+                        })
+                        .text(function(d) {
+                          console.log(d);
+                          return d.properties.name;
+                       });*/
+
+
       /*for(let rawTweetIndex in rawTweets.result){
         // console.log(rawTweets.result[rawTweetIndex]);
         if(rawTweets.result[rawTweetIndex].coordinates!=null){
@@ -382,6 +411,10 @@ export class HeatMapComponent implements OnInit, OnDestroy {
       y = centroid[1];
       zoomLevel = heatMapComponentScope.zoomSettings.zoomLevel;
       heatMapComponentScope.centered =  d;
+      //console.log("currcountry: ");
+      //console.log(d);
+      heatMapComponentScope.showCountryName(heatMapComponentScope, d.properties.name, x, y );
+      //heatMapComponentScope.showCountryName(heatMapComponentScope, d, d.properties.iso_a2, d.properties.name, x, y );
       //console.log(x+','+y);
     } else {
       x = heatMapComponentScope.width / 2;
@@ -398,6 +431,18 @@ export class HeatMapComponent implements OnInit, OnDestroy {
                   .ease(heatMapComponentScope.zoomSettings.ease)
                   .attr('transform',
                         'translate('+ heatMapComponentScope.width/2 + ','+ heatMapComponentScope.height/2  +')scale('+zoomLevel+')translate('+ -x + ',' + -y +')');
+  }
+
+  showCountryName(heatMapComponentScope, countryName, x, y):void{
+
+    heatMapComponentScope.g.selectAll('.country-name').remove();
+    heatMapComponentScope.g.append('text')
+    .attr('x', x)
+    .attr('y', y)
+    .attr('font-size','0.5em')
+    .attr("text-anchor", "middle")
+    .attr('class', 'country-name')
+    .text(countryName);
   }
 
   indexedCities = [];
