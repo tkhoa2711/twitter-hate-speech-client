@@ -113,6 +113,7 @@ heat-map {
 #page-container{
     .inner-container{
         padding: 0 1rem;
+        position:relative;
         h1,h2,h3{
             font-family: Roboto, 'Arial', 'Helvetica';
             color: $color-dark-grey;
@@ -132,7 +133,6 @@ heat-map {
                 background:#00bf9a;
                 padding-top:4px;
                 height:100%;
-                
                 text-align:center;
                 @include transition(all 500ms ease);
             }
@@ -142,6 +142,22 @@ heat-map {
                 height:100%;
                 @include transition(all 500ms ease);
             }
+        }
+    }
+}
+
+.hatewords-list-container{
+    .action-button{
+        opacity:1;
+        @include transition(all 500ms ease);
+        &.add{
+            position: absolute;
+            right: 1em;
+            top: 0;
+        }
+        &:hover{
+            opacity:0.5;
+            @include transition(all 500ms ease);
         }
     }
 }

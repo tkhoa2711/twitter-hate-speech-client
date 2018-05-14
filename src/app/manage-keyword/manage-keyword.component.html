@@ -1,7 +1,9 @@
 <div class="inner-container">
   <h1>Manage Keyword</h1>
   <!-- <mat-card class="widget-container keywords"> -->
-    <div class="example-container mat-elevation-z8">
+    <div class="example-container mat-elevation-z8 hatewords-list-container" >
+      <button mat-fab class="action-button add"><mat-icon>add</mat-icon></button>
+     
       <mat-table #table [dataSource]="dataSource">
 
         <!-- Position Column -->
@@ -31,7 +33,11 @@
         <!-- Symbol Column -->
         <ng-container matColumnDef="action">
           <mat-header-cell *matHeaderCellDef> Action </mat-header-cell>
-          <mat-cell *matCellDef="let element"> {{element.action}} {{element.position}} </mat-cell>
+          <mat-cell *matCellDef="let element" fxLayout="row" fxLayoutAlign="start center" > 
+            <button mat-icon-button class="action-button edit"><mat-icon>edit</mat-icon></button>
+            <button mat-icon-button class="action-button delete"><mat-icon>delete</mat-icon></button>
+            {{element.action}} {{element.position}} 
+          </mat-cell>
         </ng-container>
     
         <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
