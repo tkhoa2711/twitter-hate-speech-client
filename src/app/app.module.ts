@@ -14,6 +14,7 @@ import { MatButtonModule,
         MatInputModule,
         MatOptionModule,
         MatSelectModule,
+        MatTableModule,
         MatToolbarModule, 
         MatProgressSpinnerModule} from '@angular/material';
 import { FlexLayoutModule } from "@angular/flex-layout";
@@ -28,6 +29,7 @@ import { AppService } from './app.service';
 import { HeatMapComponent } from './heat-map/heat-map.component';
 import { HeatMapService } from './heat-map/heat-map.service';
 import { ManageKeywordComponent } from './manage-keyword/manage-keyword.component';
+import { ManageKeywordService } from './manage-keyword/manage-keyword.service';
 import { routes } from './app.routing';
 import { DashboardComponent } from './dashboard/dashboard.component';
 
@@ -57,6 +59,7 @@ import { DashboardComponent } from './dashboard/dashboard.component';
     MatInputModule,
     MatOptionModule,
     MatSelectModule,
+    MatTableModule,
     MatToolbarModule, 
     MatProgressSpinnerModule,
     TagInputModule,
@@ -65,7 +68,7 @@ import { DashboardComponent } from './dashboard/dashboard.component';
       // preloadingStrategy: PreloadAllModules
     }),
   ],
-  providers: [ AppConfig, AppService, HeatMapService ],
+  providers: [ AppConfig, AppService, HeatMapService, ManageKeywordService ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
