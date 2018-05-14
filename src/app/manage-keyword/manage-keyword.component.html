@@ -1,49 +1,77 @@
 <div class="inner-container">
   <h1>Manage Keyword</h1>
-  <!-- <mat-card class="widget-container keywords"> -->
-    <div class="example-container mat-elevation-z8 hatewords-list-container" >
-      <button mat-fab class="action-button add"><mat-icon>add</mat-icon></button>
-     
-      <mat-table #table [dataSource]="dataSource">
+  <mat-card class="hateword-form-container" [class.show]="(this.mode!='view')">
+    <h2>{{this.mode}} keyword</h2>
+    <form [formGroup]="hateWordForm" fxLayout="column" class="hateword-form" (ngSubmit)="submitData(hateWordForm.value)" novalidate>
+        <!-- <mat-form-field>
+          <mat-select placeholder="Category" name="category" [formControl]="filterForm.controls['category']" multiple>
+            <mat-option *ngFor="let hateSpeechCategory of hateSpeechCategories" [value]="hateSpeechCategory.id">
+              {{ hateSpeechCategory.label }}
+            </mat-option>
+          </mat-select>
+        </mat-form-field> -->
+        <mat-form-field>
+          <input matInput name="word" placeholder="Enter hateword" value="" [formControl]="hateWordForm.controls['word']">
+        </mat-form-field>
+        <mat-form-field>
+          <input matInput name="category" placeholder="Enter category separated by comma" value="" [formControl]="hateWordForm.controls['category']">
+        </mat-form-field>
+        <mat-form-field>
+          <input matInput name="similar_to" placeholder="Enter similar word separated by comma" value="" [formControl]="hateWordForm.controls['similar_to']">
+        </mat-form-field>
+        <!-- <mat-form-field>
+          <input matInput name="hashtags" placeholder="Hashtags" value="" [formControl]="filterForm.controls['hashtags']">
+        </mat-form-field> -->
+        <!-- <tag-input #hashtags name="hashtags" [ngModel]="items" 
+        formControlName="hashtags" [modelAsStrings]="true"></tag-input> -->
+        <br>
+        <button mat-raised-button color="primary" type="submit" [disabled]="!hateWordForm.valid" >Submit</button>
+        <button mat-button color="accent" type="button" (click)="resetHateWordForm()">Cancel</button>
+      </form>
+  </mat-card>
+  <br>
+  <div class="example-container mat-elevation-z8 hatewords-list-container" >
+    <button mat-fab class="action-button add" (click)="addHateWord()"><mat-icon>add</mat-icon></button>
+    
+    <mat-table #table [dataSource]="dataSource">
 
-        <!-- Position Column -->
-        <ng-container matColumnDef="position">
-          <mat-header-cell *matHeaderCellDef> No. </mat-header-cell>
-          <mat-cell *matCellDef="let element"> {{element.position}} </mat-cell>
-        </ng-container>
-    
-        <!-- Name Column -->
-        <ng-container matColumnDef="word">
-          <mat-header-cell *matHeaderCellDef> Name </mat-header-cell>
-          <mat-cell *matCellDef="let element"> {{element.word}} </mat-cell>
-        </ng-container>
-    
-        <!-- Weight Column -->
-        <ng-container matColumnDef="category">
-          <mat-header-cell *matHeaderCellDef> Category </mat-header-cell>
-          <mat-cell *matCellDef="let element"> {{element.category}} </mat-cell>
-        </ng-container>
-    
-        <!-- Symbol Column -->
-        <ng-container matColumnDef="similarTo">
-          <mat-header-cell *matHeaderCellDef> Similar To </mat-header-cell>
-          <mat-cell *matCellDef="let element"> {{element.similarTo}} </mat-cell>
-        </ng-container>
+      <!-- Position Column -->
+      <ng-container matColumnDef="position">
+        <mat-header-cell *matHeaderCellDef> No. </mat-header-cell>
+        <mat-cell *matCellDef="let element"> {{element.position}} </mat-cell>
+      </ng-container>
+  
+      <!-- Name Column -->
+      <ng-container matColumnDef="word">
+        <mat-header-cell *matHeaderCellDef> Name </mat-header-cell>
+        <mat-cell *matCellDef="let element"> {{element.word}} </mat-cell>
+      </ng-container>
+  
+      <!-- Weight Column -->
+      <ng-container matColumnDef="category">
+        <mat-header-cell *matHeaderCellDef> Category </mat-header-cell>
+        <mat-cell *matCellDef="let element"> {{element.category}} </mat-cell>
+      </ng-container>
+  
+      <!-- Symbol Column -->
+      <ng-container matColumnDef="similarTo">
+        <mat-header-cell *matHeaderCellDef> Similar To </mat-header-cell>
+        <mat-cell *matCellDef="let element"> {{element.similarTo}} </mat-cell>
+      </ng-container>
 
-        <!-- Symbol Column -->
-        <ng-container matColumnDef="action">
-          <mat-header-cell *matHeaderCellDef> Action </mat-header-cell>
-          <mat-cell *matCellDef="let element" fxLayout="row" fxLayoutAlign="start center" > 
-            <button mat-icon-button class="action-button edit"><mat-icon>edit</mat-icon></button>
-            <button mat-icon-button class="action-button delete"><mat-icon>delete</mat-icon></button>
-            {{element.action}} {{element.position}} 
-          </mat-cell>
-        </ng-container>
-    
-        <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
-        <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
-      </mat-table>
-    
-    </div>
-  <!-- </mat-card> -->
+      <!-- Symbol Column -->
+      <ng-container matColumnDef="action">
+        <mat-header-cell *matHeaderCellDef> Action </mat-header-cell>
+        <mat-cell *matCellDef="let element" fxLayout="row" fxLayoutAlign="start center" > 
+          <button mat-icon-button class="action-button edit" (click)="updateHateWord(element.word, element.category, element.similarTo)"><mat-icon>edit</mat-icon></button>
+          <button mat-icon-button class="action-button delete"><mat-icon>delete</mat-icon></button>
+          <!-- {{element.action}} {{element.position}}  -->
+        </mat-cell>
+      </ng-container>
+  
+      <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+      <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+    </mat-table>
+  
+  </div>
 </div>

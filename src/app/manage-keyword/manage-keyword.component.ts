@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { FormBuilder, FormGroup, FormControl, Validators } from '@angular/forms';
 import { ManageKeywordService } from './manage-keyword.service';
 
 @Component({
@@ -15,13 +16,18 @@ export class ManageKeywordComponent implements OnInit {
     {position: 1, word: 'Loading..', category: 'Loading..', similarTo: 'Loading..', action:''}
   ];
 
+  mode = 'view';
+
+  hateWordForm: FormGroup;
  
 
-  constructor( private manageKeywordService : ManageKeywordService ) { 
-    
+  constructor( private manageKeywordService : ManageKeywordService,
+              private formBuilder: FormBuilder ) { 
+    this.createForm();
   }
 
   ngOnInit() {
+    this.mode = 'view';
     let hateWordsDataPromise = this.manageKeywordService.getHateWordsData();
     hateWordsDataPromise.then(requestResult => {
       let fetchedHateWords = requestResult.json().result;
@@ -37,6 +43,49 @@ export class ManageKeywordComponent implements OnInit {
       this.dataSource = this.hateWords;
       // this.tweetsDownloaded.emit(rawTweets);
     });
+  }
+
+  createForm() {
+    this.hateWordForm = this.formBuilder.group({
+      word: ['', Validators.required],
+      category: [''],
+      similar_to: ['']/*,
+      keywords: new FormControl('', []),
+      hashtags: [''], // <--- the FormControl called "name"*/
+    });
+  }
+  resetHateWordForm(){
+    this.hateWordForm.reset();
+    this.mode='view';
+  }
+  addHateWord(){
+    this.hateWordForm.reset();
+    this.mode='insert';
+  }
+  updateHateWord(pWord, pCategory, pSimilarTo){
+    this.hateWordForm.reset();
+    this.hateWordForm = this.formBuilder.group({
+      word: [pWord, Validators.required],
+      category: [pCategory],
+      similar_to: [pSimilarTo]/*,
+      keywords: new FormControl('', []),
+      hashtags: [''], // <--- the FormControl called "name"*/
+    });
+    this.mode='update';
+  }
+  submitData(hateWordData:any){
+    
+    hateWordData.category = hateWordData.category.split(",");
+    hateWordData.similar_to = hateWordData.similar_to.split(",");
+    console.log(hateWordData);
+
+    let submitKeywordPromise = this.manageKeywordService.submitKeyword(hateWordData);
+    submitKeywordPromise.then(requestResult => {
+      let result = requestResult.json();
+      console.log("completed");
+    });
+    // console.log(filterData.startDate.valueOf());
+    // console.log(filterData.endDate.valueOf());
   }
 
 }

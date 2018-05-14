@@ -24,4 +24,10 @@ export class ManageKeywordService{
         });*/
         return hateWordsDataPromise;
     }
+
+    submitKeyword(hatewordData): Promise<any>{
+        //let submitKeywordPromise = this._http.get(`${this.appConfig.API_URL}/hatewords`, { withCredentials: true }).toPromise();
+        let submitKeywordPromise = this._http.post(`${this.appConfig.API_URL}/hatewords`, hatewordData , { withCredentials: true }).toPromise();
+        return submitKeywordPromise;
+    }
 }
