@@ -28,6 +28,10 @@ export class ManageKeywordComponent implements OnInit {
 
   ngOnInit() {
     this.mode = 'view';
+    this.refreshDataSource();
+  }
+
+  refreshDataSource(){
     let hateWordsDataPromise = this.manageKeywordService.getHateWordsData();
     hateWordsDataPromise.then(requestResult => {
       let fetchedHateWords = requestResult.json().result;
@@ -39,14 +43,19 @@ export class ManageKeywordComponent implements OnInit {
         ctr++;
         let categories ="";
         let similarWords ="";
-        if(fetchedHateWord.category!=null){
+        if((fetchedHateWord.category!=null) && (fetchedHateWord.category.length>0) ) {
+          //console.log(fetchedHateWord.category);
           categories = fetchedHateWord.category.join();
-          console.log(categories);
+          
         }
-        if(fetchedHateWord.similar_to!=null){
+        if((fetchedHateWord.similar_to!=null) && (fetchedHateWord.similar_to.length>0 )){
+          //console.log(fetchedHateWord.similar_to);
           similarWords = fetchedHateWord.similar_to.join();
-          console.log(similarWords);
         }
+        //let categories = fetchedHateWord.category;
+        //let similarWords =fetchedHateWord.similar_to; 
+
+
         //console.log(fetchedHateWord);
         this.hateWords.push({position: ctr, word: fetchedHateWord.word, category: categories, similarTo:similarWords, action:'' }); 
       }
@@ -86,13 +95,22 @@ export class ManageKeywordComponent implements OnInit {
   }
   submitData(hateWordData:any){
     
-    hateWordData.category = hateWordData.category.split(",");
-    hateWordData.similar_to = hateWordData.similar_to.split(",");
+    if((hateWordData.category!="")&&(hateWordData.category!=null)){
+      hateWordData.category = hateWordData.category.split(",");
+    }else{
+      hateWordData.category = [];
+    }
+    if((hateWordData.similar_to!="")&&(hateWordData.similar_to!=null)){
+      hateWordData.similar_to = hateWordData.similar_to.split(",");
+    }else{
+      hateWordData.similar_to = [];
+    }
     console.log(hateWordData);
 
     let submitKeywordPromise = this.manageKeywordService.submitKeyword(hateWordData);
     submitKeywordPromise.then(requestResult => {
-      let result = requestResult.json();
+      //let result = requestResult.json();
+      this.refreshDataSource();
       console.log("completed");
     });
     // console.log(filterData.startDate.valueOf());

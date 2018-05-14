@@ -13,7 +13,7 @@ import { HeatMapService } from './heat-map.service';
 @Component({
   selector: 'heat-map',
   templateUrl: './heat-map.component.html',
-  styleUrls: ['./heat-map.component.css']
+  // styleUrls: ['./heat-map.component.css']
 })
 export class HeatMapComponent implements OnInit, OnDestroy {
   @Input()

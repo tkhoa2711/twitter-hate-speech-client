@@ -1,7 +1,7 @@
 <mat-toolbar  fxLayout="row" fxLayoutAlign="space-between center" class="header">
-  <div class="app-name">
-    Twitter Hate Speech Detector
-  </div>
+  <a mat-button class="app-name" [routerLink]="['/']">
+    <h1>{{this.title}}</h1>
+  </a>
   <div class="menu">
     <button mat-button>
       <mat-icon>public</mat-icon>

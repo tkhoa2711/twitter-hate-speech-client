@@ -24,7 +24,7 @@ import { AppService } from './app.service';
   ]
 })
 export class AppComponent implements OnInit {
-  title = 'app';
+  title = 'Twitter Hate Speech Detector';
   errorMessage: String;
   host;
   svg;

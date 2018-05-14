@@ -11,13 +11,13 @@
           </mat-select>
         </mat-form-field> -->
         <mat-form-field>
-          <input matInput name="word" placeholder="Enter hateword" value="" [formControl]="hateWordForm.controls['word']">
+          <input matInput name="word" class="input-word" placeholder="Enter hateword" value="" [formControl]="hateWordForm.controls['word']">
         </mat-form-field>
         <mat-form-field>
-          <input matInput name="category" placeholder="Enter category separated by comma" value="" [formControl]="hateWordForm.controls['category']">
+          <input matInput name="category" class="input-category" placeholder="Enter category separated by comma" value="" [formControl]="hateWordForm.controls['category']">
         </mat-form-field>
         <mat-form-field>
-          <input matInput name="similar_to" placeholder="Enter similar word separated by comma" value="" [formControl]="hateWordForm.controls['similar_to']">
+          <input matInput name="similar_to" class="input-similar_to" placeholder="Enter similar word separated by comma" value="" [formControl]="hateWordForm.controls['similar_to']">
         </mat-form-field>
         <!-- <mat-form-field>
           <input matInput name="hashtags" placeholder="Hashtags" value="" [formControl]="filterForm.controls['hashtags']">
@@ -25,8 +25,8 @@
         <!-- <tag-input #hashtags name="hashtags" [ngModel]="items" 
         formControlName="hashtags" [modelAsStrings]="true"></tag-input> -->
         <br>
-        <button mat-raised-button color="primary" type="submit" [disabled]="!hateWordForm.valid" >Submit</button>
-        <button mat-button color="accent" type="button" (click)="resetHateWordForm()">Cancel</button>
+        <button mat-raised-button class="btn-submit" [class.disabled]="!hateWordForm.valid" color="primary" type="submit" [disabled]="!hateWordForm.valid" >Submit</button>
+        <button mat-button class="btn-cancel" color="accent" type="button" (click)="resetHateWordForm()">Cancel</button>
       </form>
   </mat-card>
   <br>
