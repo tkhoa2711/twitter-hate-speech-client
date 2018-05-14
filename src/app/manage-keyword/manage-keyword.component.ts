@@ -37,7 +37,18 @@ export class ManageKeywordComponent implements OnInit {
       for(let fetchedHateWord of fetchedHateWords){
         
         ctr++;
-        this.hateWords.push({position: ctr, word: fetchedHateWord.word, category: '', similarTo:'', action:'' }); 
+        let categories ="";
+        let similarWords ="";
+        if(fetchedHateWord.category!=null){
+          categories = fetchedHateWord.category.join();
+          console.log(categories);
+        }
+        if(fetchedHateWord.similar_to!=null){
+          similarWords = fetchedHateWord.similar_to.join();
+          console.log(similarWords);
+        }
+        //console.log(fetchedHateWord);
+        this.hateWords.push({position: ctr, word: fetchedHateWord.word, category: categories, similarTo:similarWords, action:'' }); 
       }
       // console.log(this.hateWords);
       this.dataSource = this.hateWords;
