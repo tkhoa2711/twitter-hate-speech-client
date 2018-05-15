@@ -15,7 +15,7 @@ describe('Manage Keyword Page', () => {
     expect(els.count()).toBeGreaterThan(1);
   });
    
-  it('[Create] insert button should work',() => {
+  it('[Create-01] insert button should work',() => {
     // ensure the form does not show before insert button is clicked
     expect(element(by.css('.hateword-form-container.show')).isPresent()).toBeFalsy("The keyword form shouldn't appear right now ");
     // trigger the insert button click
@@ -25,8 +25,13 @@ describe('Manage Keyword Page', () => {
     // ensure the title is insert
     expect(element(by.css('.hateword-form-container h2')).getText()).toContain('insert keyword');
   });
+  it('[Create-02] cancel button should close form',() => {
+    element(by.css('.action-button.add')).click();
+    element(by.css('.btn-cancel')).click();
+    expect(element(by.css('.hateword-form-container.show')).isPresent()).toBeFalsy("The keyword form shouldn't appear right now ");
+  });
 
-  it('[Create] empty data submission should not be allowed',() => {
+  it('[Create-03] empty data submission should not be allowed',() => {
     // send empty input
     element(by.css('.action-button.add')).click();
     element(by.css('.input-word')).sendKeys('');
@@ -38,14 +43,10 @@ describe('Manage Keyword Page', () => {
     // expect(element(by.css('.btn-submit')).isPresent()).toBeTruthy('The submit button should be disabled now');
   });
 
-  it('[Create] cancel button should close form',() => {
-    element(by.css('.action-button.add')).click();
-    element(by.css('.btn-cancel')).click();
-    expect(element(by.css('.hateword-form-container.show')).isPresent()).toBeFalsy("The keyword form shouldn't appear right now ");
-  });
+  
 
 
-  it('[Update] edit button should work',() => {
+  it('[Update-01] edit button should work',() => {
     // ensure the form does not show before edit button is clicked
     expect(element(by.css('.hateword-form-container.show')).isPresent()).toBeFalsy("The keyword form shouldn't appear right now ");
     // trigger the edit button click
@@ -56,7 +57,14 @@ describe('Manage Keyword Page', () => {
     expect(element(by.css('.hateword-form-container h2')).getText()).toContain('update keyword');
   });
 
-  it('[Update] edit should preload values',() => {
+  it('[Update-02] cancel button should close form',() => {
+    element.all(by.css('.action-button.edit')).first().click();
+    // trigger the close btn
+    element(by.css('.btn-cancel')).click();
+    expect(element(by.css('.hateword-form-container.show')).isPresent()).toBeFalsy("The keyword form shouldn't appear right now ");
+  });
+
+  it('[Update-03] edit should preload values',() => {
     // trigger the edit button click
     element.all(by.css('.action-button.edit')).first().click();
 
@@ -69,11 +77,6 @@ describe('Manage Keyword Page', () => {
     expect(element(by.css('.input-similar_to')).getAttribute('value')).toEqual(firstRowColumn.get(3).getText());
   });
 
-  it('[Update] cancel button should close form',() => {
-    element.all(by.css('.action-button.edit')).first().click();
-    // trigger the close btn
-    element(by.css('.btn-cancel')).click();
-    expect(element(by.css('.hateword-form-container.show')).isPresent()).toBeFalsy("The keyword form shouldn't appear right now ");
-  });
+  
 
 });

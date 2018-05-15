@@ -19,6 +19,7 @@ export class ManageKeywordComponent implements OnInit {
   mode = 'view';
 
   hateWordForm: FormGroup;
+  result = '';
  
 
   constructor( private manageKeywordService : ManageKeywordService,
@@ -41,7 +42,7 @@ export class ManageKeywordComponent implements OnInit {
       for(let fetchedHateWord of fetchedHateWords){
         
         ctr++;
-        let categories ="";
+        /*let categories ="";
         let similarWords ="";
         if((fetchedHateWord.category!=null) && (fetchedHateWord.category.length>0) ) {
           //console.log(fetchedHateWord.category);
@@ -51,9 +52,9 @@ export class ManageKeywordComponent implements OnInit {
         if((fetchedHateWord.similar_to!=null) && (fetchedHateWord.similar_to.length>0 )){
           //console.log(fetchedHateWord.similar_to);
           similarWords = fetchedHateWord.similar_to.join();
-        }
-        //let categories = fetchedHateWord.category;
-        //let similarWords =fetchedHateWord.similar_to; 
+        }*/
+        let categories = fetchedHateWord.category;
+        let similarWords =fetchedHateWord.similar_to; 
 
 
         //console.log(fetchedHateWord);
@@ -76,14 +77,17 @@ export class ManageKeywordComponent implements OnInit {
   }
   resetHateWordForm(){
     this.hateWordForm.reset();
+    this.result = '';
     this.mode='view';
   }
   addHateWord(){
     this.hateWordForm.reset();
+    this.result = '';
     this.mode='insert';
   }
   updateHateWord(pWord, pCategory, pSimilarTo){
     this.hateWordForm.reset();
+    this.result = '';
     this.hateWordForm = this.formBuilder.group({
       word: [pWord, Validators.required],
       category: [pCategory],
@@ -112,6 +116,11 @@ export class ManageKeywordComponent implements OnInit {
       //let result = requestResult.json();
       this.refreshDataSource();
       console.log("completed");
+      this.result = 'success';
+    }).catch(function(e) {
+      console.log('Error: ', );
+      this.result = 'error';
+      //throw e;
     });
     // console.log(filterData.startDate.valueOf());
     // console.log(filterData.endDate.valueOf());

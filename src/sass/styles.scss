@@ -169,4 +169,18 @@ heat-map {
     &.show{
         display:block !important;
     }
+
+    .form-result{
+        width: 100%;
+        font-size: 1.2em;
+        color: greenyellow;
+        display:none;
+        text-align:center;
+        &.error{
+            color: red;
+        }
+        &.show{
+            display:block;
+        }
+    }
 }

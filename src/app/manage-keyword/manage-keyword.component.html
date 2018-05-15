@@ -1,6 +1,7 @@
 <div class="inner-container">
   <h1>Manage Keyword</h1>
   <mat-card class="hateword-form-container" [class.show]="(this.mode!='view')">
+    <div class="form-result" [class.show]="this.result!=''" [class.error]="this.result!='success'" [innerHtml]=[this.result]></div>
     <h2>{{this.mode}} keyword</h2>
     <form [formGroup]="hateWordForm" fxLayout="column" class="hateword-form" (ngSubmit)="submitData(hateWordForm.value)" novalidate>
         <!-- <mat-form-field>
