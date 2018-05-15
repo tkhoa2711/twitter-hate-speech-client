@@ -3,7 +3,7 @@
   <mat-card class="hateword-form-container" [class.show]="(this.mode!='view')">
     <div class="form-result" [class.show]="this.result!=''" [class.error]="this.result!='success'" [innerHtml]=[this.result]></div>
     <h2>{{this.mode}} keyword</h2>
-    <form [formGroup]="hateWordForm" fxLayout="column" class="hateword-form" (ngSubmit)="submitData(hateWordForm.value)" novalidate>
+    <form [formGroup]="hateWordForm" fxLayout="column" class="hateword-form" (ngSubmit)="submitData(hateWordForm.value)">
         <!-- <mat-form-field>
           <mat-select placeholder="Category" name="category" [formControl]="filterForm.controls['category']" multiple>
             <mat-option *ngFor="let hateSpeechCategory of hateSpeechCategories" [value]="hateSpeechCategory.id">
@@ -12,7 +12,7 @@
           </mat-select>
         </mat-form-field> -->
         <mat-form-field>
-          <input matInput name="word" class="input-word" placeholder="Enter hateword" value="" [formControl]="hateWordForm.controls['word']">
+          <input matInput name="word" class="input-word" placeholder="Enter hateword" value="" [formControl]="hateWordForm.controls['word']" required>
         </mat-form-field>
         <mat-form-field>
           <input matInput name="category" class="input-category" placeholder="Enter category separated by comma" value="" [formControl]="hateWordForm.controls['category']">

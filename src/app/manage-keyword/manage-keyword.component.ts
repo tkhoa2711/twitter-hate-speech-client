@@ -91,14 +91,14 @@ export class ManageKeywordComponent implements OnInit {
     this.hateWordForm = this.formBuilder.group({
       word: [pWord, Validators.required],
       category: [pCategory],
-      similar_to: [pSimilarTo]/*,
-      keywords: new FormControl('', []),
-      hashtags: [''], // <--- the FormControl called "name"*/
+      similar_to: [pSimilarTo]
     });
     this.mode='update';
   }
   submitData(hateWordData:any){
+    console.log(hateWordData);
     
+
     if((hateWordData.category!="")&&(hateWordData.category!=null)){
       hateWordData.category = hateWordData.category.split(",");
     }else{
@@ -122,6 +122,9 @@ export class ManageKeywordComponent implements OnInit {
       this.result = 'error';
       //throw e;
     });
+
+    // TEMPORARY!!!
+    // this.result = 'success';
     // console.log(filterData.startDate.valueOf());
     // console.log(filterData.endDate.valueOf());
   }
