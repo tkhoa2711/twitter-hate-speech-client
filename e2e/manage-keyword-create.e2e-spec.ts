@@ -16,6 +16,7 @@ describe('Manage Keyword - Create', () => {
     // ensure the title is insert
     expect(element(by.css('.hateword-form-container h2')).getText()).toContain('insert keyword');
   });
+  
   it('[02] cancel button should close insert keyword form',() => {
     element(by.css('.action-button.add')).click();
     element(by.css('.btn-cancel')).click();

@@ -9,5 +9,5 @@ fi
 
 for i in `seq 1 $M`
 do
-    nohup ./e2e-view-keyword.sh $N &> ./e2e-load-test/e2e-view-keywords-$i.out & 
+    nohup ./e2e-create-keyword-base.sh $N &> ./e2e-load-test-result/create/base/e2e-create-keyword-base-$i.out & 
 done
