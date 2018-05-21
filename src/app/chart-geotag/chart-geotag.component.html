@@ -1,0 +1,15 @@
+<mat-card class="widget-container geotag-widget">
+  <h3>Geotagged Tweets</h3>
+  <div class="geotag-meter" fxLayout="row">
+    <div class="tagged" [fxFlex]="this.geotaggedTweetPercentage">
+      {{this.geotaggedTweetPercentage}}% geotagged
+      
+    </div>
+    <div class="untagged" fxFlex>
+      {{100-this.geotaggedTweetPercentage}}% untagged
+    </div>
+  </div>
+  <div>
+    <b>{{this.totalTweetCount}} tweets</b> found with <b>{{this.geotaggedTweetCount}} tweets</b> geotagged.
+  </div>
+</mat-card>

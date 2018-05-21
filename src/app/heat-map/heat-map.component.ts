@@ -180,8 +180,8 @@ export class HeatMapComponent implements OnInit, OnDestroy {
         }
       }
       // console.log(cleanedData);
-      //console.log(rawTweets.result);
-      console.log(this.countryTweetCount);
+      // console.log(rawTweets.result);
+      // console.log(this.countryTweetCount);
       // console.log(this.getMaxTweetCount());
 
       this.drawCountry(this,"world");

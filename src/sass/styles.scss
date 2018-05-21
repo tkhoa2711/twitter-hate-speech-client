@@ -124,6 +124,7 @@ heat-map {
 }
 
 .widget-container{
+    margin-bottom:16px;
     &.geotag-widget{
         .geotag-meter{
             background:$color-light-grey;

@@ -32,6 +32,8 @@ import { ManageKeywordComponent } from './manage-keyword/manage-keyword.componen
 import { ManageKeywordService } from './manage-keyword/manage-keyword.service';
 import { routes } from './app.routing';
 import { DashboardComponent } from './dashboard/dashboard.component';
+import { ChartGeotagComponent } from './chart-geotag/chart-geotag.component';
+import { ChartGenderComponent } from './chart-gender/chart-gender.component';
 
 
 @NgModule({
@@ -40,7 +42,9 @@ import { DashboardComponent } from './dashboard/dashboard.component';
     HeatMapComponent,
     MouseWheelDirective,
     ManageKeywordComponent,
-    DashboardComponent
+    DashboardComponent,
+    ChartGeotagComponent,
+    ChartGenderComponent
   ],
   imports: [
     BrowserModule,
