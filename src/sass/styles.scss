@@ -145,6 +145,23 @@ heat-map {
             }
         }
     }
+    .loader{
+        z-index: 100;
+        width: 100%;
+        height: 100%;
+        position: absolute;
+        background: white;
+        opacity: 0;
+        top:0;
+        left:0;
+        pointer-events:none;
+        @include transition(opacity 500ms ease);
+        &.show{
+            opacity:0.4;
+            pointer-events:all;
+            @include transition(opacity 500ms ease);
+        }
+    }
 }
 
 .hatewords-list-container{

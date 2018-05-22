@@ -1,7 +1,7 @@
 <heat-map  mouseWheel (mouseWheelUp)="zoomOut(event)" (mouseWheelDown)="zoomIn(event)"></heat-map>
-<div class="inner-container">
-  <h1>Tweet Statistic</h1>
-  <chart-geotag></chart-geotag>
-  <chart-gender></chart-gender>
+<div class="inner-container" fxLayout="row wrap" fxLayoutGap="1%">
+  <h1 fxFlex="100%">Tweet Statistic</h1>
+  <chart-geotag fxFlex="100%"></chart-geotag>
+  <chart-gender fxFlex="49.5%"></chart-gender>
 </div>
 <div class="padder"></div>

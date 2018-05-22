@@ -1,4 +1,4 @@
-<mat-card class="widget-container geotag-widget">
+<mat-card class="widget-container geotag-widget" [class.show]="this.isLoading">
   <h3>Geotagged Tweets</h3>
   <div class="geotag-meter" fxLayout="row">
     <div class="tagged" [fxFlex]="this.geotaggedTweetPercentage">
@@ -12,4 +12,7 @@
   <div>
     <b>{{this.totalTweetCount}} tweets</b> found with <b>{{this.geotaggedTweetCount}} tweets</b> geotagged.
   </div>
+  <div class="loader" [class.show]="this.isLoading" fxLayout="row" fxLayoutAlign="space-around center"> 
+    <mat-spinner></mat-spinner>
+  </div>  
 </mat-card>

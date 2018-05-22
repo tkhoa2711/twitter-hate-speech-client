@@ -164,8 +164,10 @@ export class HeatMapComponent implements OnInit, OnDestroy {
       for(let rawTweetIndex in rawTweets.result){
         //console.log(rawTweets.result[rawTweetIndex].place.country_code);
         // count number of tweet for this country if not null
-        if(rawTweets.result[rawTweetIndex].place!=null){
-          // initiat value
+        //if(rawTweets.result[rawTweetIndex].place!=null){
+        if(rawTweets.result[rawTweetIndex].coordinates!=null){
+          // initialize value
+          // console.log(rawTweets.result[rawTweetIndex].place);
           if(this.countryTweetCount[rawTweets.result[rawTweetIndex].place.country_code] == null) {
             this.countryTweetCount[rawTweets.result[rawTweetIndex].place.country_code] = 1;
           }else{
@@ -198,8 +200,6 @@ export class HeatMapComponent implements OnInit, OnDestroy {
     };
     this.width = document.querySelector('#page-container').clientWidth - this.margin.left - this.margin.right;
     this.height = this.width * 0.6 - this.margin.bottom - this.margin.top;
-    //this.width = "100%";
-    //this.height="100%";
   }
 
   buildSVG() {
@@ -318,12 +318,16 @@ export class HeatMapComponent implements OnInit, OnDestroy {
     }
     if(zoomLevel == 'country'){
       countryMapConfig.stroke = '#d5d8db';
-      countryMapConfig.strokeWidth =  0.3
+      countryMapConfig.strokeWidth =  0.3;
     }
 
-    var scaleDensity = D3.scaleLinear()
+    /*var scaleDensity = D3.scaleLinear()
       .domain([0, heatMapComponentScope.getMaxTweetCount()])
-      .range([0, 1]);
+      .range([0, 1]);*/
+    var logScaleDensity = D3.scaleLog()
+      .domain([1, heatMapComponentScope.getMaxTweetCount()])
+      .range([0.1, 1]);
+    
     var color = D3.scaleSequential(D3.interpolateReds);
 
     //var heatMapComponentScope = this;
@@ -341,11 +345,12 @@ export class HeatMapComponent implements OnInit, OnDestroy {
       .style('stroke-width', countryMapConfig.strokeWidth)
       .style('fill', function(d){
         // show density only for world level
-        if(zoomLevel=='world'){
+        if(zoomLevel=='world') {
           var countryTweetCount = heatMapComponentScope.getTweetCount(d.properties.iso_a2);
-          if(countryTweetCount > 0) 
-            return color(scaleDensity(countryTweetCount));
-          else
+          if(countryTweetCount > 0){ 
+            // console.log(logScaleDensity(countryTweetCount)+" "+countryTweetCount);
+            return color(logScaleDensity(countryTweetCount));
+          }else
             return countryMapConfig.fill;
         }else{
           return countryMapConfig.fill;
@@ -365,25 +370,30 @@ export class HeatMapComponent implements OnInit, OnDestroy {
 
     // normalise the value
     var scaleDensity = D3.scaleLinear().domain([0, 5]).range([0,1]);
+    
 
     // setup the color function
     var color = D3.scaleSequential(D3.interpolateRdYlGn);
 
     tweets.forEach((tweet) => {
-      if (tweet.coordinates.length > 0) {
-        const lat = tweet.coordinates[1];
-        const lon = tweet.coordinates[0];
-        let location: any = {};
-        // console.log(tweet.coordinates);
-        // location.coords = this.getRandomLatLon();
-        location.coords = [lon, lat];
-        //console.log(location.coords );
-        location.sentiment_level = tweet.sentiment_level;
-        location.originalCoords = [lon, lat];
-        location.fullTweet = tweet.fullTweet;
-        if (this.projection(location.coords)) {
-          location.coords = this.projection(location.coords);
-          this.points.push(location);
+      if(tweet.coordinates != null){
+        //console.log(tweet.coordinates);
+        if (tweet.coordinates.length > 0) {
+          const lat = tweet.coordinates[1];
+          const lon = tweet.coordinates[0];
+          let location: any = {};
+          // console.log(tweet.coordinates);
+          // location.coords = this.getRandomLatLon();
+          location.coords = [lon, lat];
+          //console.log(location.coords );
+          //location.sentiment_level = tweet.sentiment_level;
+          location.sentiment_level = Math.floor(Math.random() * 5);
+          location.originalCoords = [lon, lat];
+          location.fullTweet = tweet.fullTweet;
+          if (this.projection(location.coords)) {
+            location.coords = this.projection(location.coords);
+            this.points.push(location);
+          }
         }
       }
     });

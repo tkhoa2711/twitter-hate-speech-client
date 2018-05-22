@@ -33,7 +33,7 @@ export class HeatMapService{
     }
 
     getTwitterData(): Promise<any> {
-        let twitterDataPromise = this._http.get(`${this.appConfig.API_URL}/tweets?limit=100`, { withCredentials: true }).toPromise();
+        let twitterDataPromise = this._http.get(`${this.appConfig.API_URL}/tweets?limit=5000`, { withCredentials: true }).toPromise();
         twitterDataPromise.then(requestResult => {
             let rawTweets = requestResult.json();
             this.tweetsDownloaded.emit(rawTweets);
