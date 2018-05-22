@@ -91,6 +91,29 @@ heat-map {
             opacity:0.2;
         }
     }
+
+    &.world-view{
+        .tweet-circle{
+            opacity:0 !important;
+            pointer-events:none;
+            @include transition(opacity 1000ms);
+        }
+    }
+
+    &.country-view{
+        .tweet-circle{
+            opacity:0.5 !important;
+            @include transition(opacity 1000ms ease 700ms);
+        }
+    }
+
+    &.state-view{
+        .tweet-circle{
+            opacity:0.5 !important;
+            @include transition(opacity 1000ms ease 700ms);
+        }
+    }
+
     .loader{
         z-index: 100;
         width: 100%;
@@ -145,6 +168,21 @@ heat-map {
             }
         }
     }
+    &.state-tweet-count-widget{
+        .bar {
+            fill: #5f89ad;
+        }
+        .axis {
+            font-size: 13px;
+            path,line {
+                fill: none;
+                display: none;
+            }
+        }
+        .label {
+            font-size: 13px;
+        }
+    }
     .loader{
         z-index: 100;
         width: 100%;
@@ -161,6 +199,14 @@ heat-map {
             pointer-events:all;
             @include transition(opacity 500ms ease);
         }
+    }
+}
+
+chart-state-tweet-count{
+    opacity:0;
+    &.show{
+        opacity:1;
+        @include transition(opacity 500ms ease);
     }
 }
 

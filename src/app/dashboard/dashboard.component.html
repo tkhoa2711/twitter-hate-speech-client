@@ -1,7 +1,8 @@
-<heat-map  mouseWheel (mouseWheelUp)="zoomOut(event)" (mouseWheelDown)="zoomIn(event)"></heat-map>
-<div class="inner-container" fxLayout="row wrap" fxLayoutGap="1%">
+<heat-map  mouseWheel (mouseWheelUp)="zoomOut(event)" (mouseWheelDown)="zoomIn(event)" [class.world-view]="this._mapService.getViewMode()=='world'" [class.country-view]="this._mapService.getViewMode()=='country'"></heat-map>
+<div class="inner-container" fxLayout="row wrap" fxLayoutGap="1%" fxLayoutAlign="space-between stretch" >
   <h1 fxFlex="100%">Tweet Statistic</h1>
-  <chart-geotag fxFlex="100%"></chart-geotag>
-  <chart-gender fxFlex="49.5%"></chart-gender>
+  <chart-geotag fxFlex="49%"></chart-geotag>
+  <chart-gender fxFlex="49%"></chart-gender>
+  <chart-state-tweet-count fxFlex="100%" [class.show]="this._mapService.getViewMode()=='country'"></chart-state-tweet-count>
 </div>
 <div class="padder"></div>

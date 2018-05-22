@@ -1,0 +1,8 @@
+<mat-card class="widget-container state-tweet-count-widget" [class.show]="this.isLoading">
+  <h3>Tweets Count By State</h3>
+  <div id="state-meter" class="state-meter" fxLayout="row">
+  </div>
+  <div class="loader" [class.show]="this.isLoading" fxLayout="row" fxLayoutAlign="space-around center"> 
+    <mat-spinner></mat-spinner>
+  </div>  
+</mat-card>

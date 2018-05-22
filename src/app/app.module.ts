@@ -34,6 +34,7 @@ import { routes } from './app.routing';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { ChartGeotagComponent } from './chart-geotag/chart-geotag.component';
 import { ChartGenderComponent } from './chart-gender/chart-gender.component';
+import { ChartStateTweetCountComponent } from './chart-state-tweet-count/chart-state-tweet-count.component';
 
 
 @NgModule({
@@ -44,7 +45,8 @@ import { ChartGenderComponent } from './chart-gender/chart-gender.component';
     ManageKeywordComponent,
     DashboardComponent,
     ChartGeotagComponent,
-    ChartGenderComponent
+    ChartGenderComponent,
+    ChartStateTweetCountComponent
   ],
   imports: [
     BrowserModule,

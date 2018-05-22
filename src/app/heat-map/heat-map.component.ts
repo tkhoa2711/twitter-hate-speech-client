@@ -79,6 +79,8 @@ export class HeatMapComponent implements OnInit, OnDestroy {
           x = this.width / 2;
           y = this.height / 2;
           this.drawCountry(this, "world");
+          this._mapService.setViewMode('world');
+          this._mapService.setCurrentCountry('');
         }
 
         this.g.transition().duration(this.zoomSettings.duration)
@@ -420,6 +422,7 @@ export class HeatMapComponent implements OnInit, OnDestroy {
           return color(scaleDensity(5-d.sentiment_level))
         })
         .attr('title','hello')
+        .attr('class','tweet-circle')
         .on('click', function(d) {
           //window.open('http://twitter.com/@' + d.username);
           //console.log(d.originalCoords);
@@ -517,9 +520,11 @@ export class HeatMapComponent implements OnInit, OnDestroy {
     var y;
     var zoomLevel;
     //var centered;
+    this._mapService.setViewMode('country');
 
+    this._mapService.setCurrentCountry(d.properties.iso_a2);
+    //console.log(heatMapComponentScope.zoomSettings.zoomLevel);
     if (d && heatMapComponentScope.centered !== d){
-
       var centroid = heatMapComponentScope.path.centroid(d);
       x = centroid[0];
       y = centroid[1];
@@ -537,14 +542,15 @@ export class HeatMapComponent implements OnInit, OnDestroy {
       heatMapComponentScope.centered = null;
     }
     //console.log(x+','+y);
+    heatMapComponentScope.zoomSettings.zoomLevel=4;
     heatMapComponentScope.g.transition().duration(heatMapComponentScope.zoomSettings.duration)
                   .ease(heatMapComponentScope.zoomSettings.ease)
                   .attr('transform',
-                        'translate('+ heatMapComponentScope.width/2 + ','+ heatMapComponentScope.height/2  +')scale('+zoomLevel+')translate('+ -x + ',' + -y +')');
+                        'translate('+ heatMapComponentScope.width/2 + ','+ heatMapComponentScope.height/2  +')scale('+heatMapComponentScope.zoomSettings.zoomLevel+')translate('+ -x + ',' + -y +')');
     heatMapComponentScope.tweetLayer.transition().duration(heatMapComponentScope.zoomSettings.duration)
                   .ease(heatMapComponentScope.zoomSettings.ease)
                   .attr('transform',
-                        'translate('+ heatMapComponentScope.width/2 + ','+ heatMapComponentScope.height/2  +')scale('+zoomLevel+')translate('+ -x + ',' + -y +')');
+                        'translate('+ heatMapComponentScope.width/2 + ','+ heatMapComponentScope.height/2  +')scale('+heatMapComponentScope.zoomSettings.zoomLevel+')translate('+ -x + ',' + -y +')');
   }
 
   showCountryName(heatMapComponentScope, countryName, x, y):void{

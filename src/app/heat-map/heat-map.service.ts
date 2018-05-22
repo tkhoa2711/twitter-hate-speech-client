@@ -12,8 +12,12 @@ export class HeatMapService{
     // private mapDataUrl = 'http://hate-speech.local';
     // private twitterDataServerUrl = 'http://139.59.110.130:5000';
     @Output() zoomChange: EventEmitter<any> = new EventEmitter();
+    @Output() viewModeChange: EventEmitter<any> = new EventEmitter();
     @Output() tweetsDownloaded: EventEmitter<any> = new EventEmitter();
     private socket;
+    private viewMode:String = 'world';
+    private currentCountry:String = '';
+    private tweets = [];;
 
     constructor (private _http:Http,
                  private appConfig: AppConfig){
@@ -33,20 +37,40 @@ export class HeatMapService{
     }
 
     getTwitterData(): Promise<any> {
-        let twitterDataPromise = this._http.get(`${this.appConfig.API_URL}/tweets?limit=5000`, { withCredentials: true }).toPromise();
+        let twitterDataPromise = this._http.get(`${this.appConfig.API_URL}/tweets?limit=2000`, { withCredentials: true }).toPromise();
         twitterDataPromise.then(requestResult => {
             let rawTweets = requestResult.json();
+            this.tweets = rawTweets;
             this.tweetsDownloaded.emit(rawTweets);
         });
         return twitterDataPromise;
     }
 
+    getDownloadedTweets():any{
+        return this.tweets;
+    }
+
+    getViewMode(): String{
+        return this.viewMode;
+    }
+
+    setViewMode(newViewMode:String){
+        this.viewMode = newViewMode;
+    }
+
+    getCurrentCountry(): String{
+        return this.currentCountry;
+    }
+
+    setCurrentCountry(newCountry:String){
+        this.currentCountry = newCountry;
+        this.viewModeChange.emit(this.viewMode);
+    }
+
     private extractData(res: Response){
         let body=res.json();
         let countriesData = topojson.feature(body,body.objects.countries).features;
-        //console.log(body);
         return countriesData || {};
-        //return body.data || {};
     }
 
     private handleError(error: any){
