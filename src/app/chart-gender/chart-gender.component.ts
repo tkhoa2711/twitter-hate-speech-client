@@ -17,6 +17,7 @@ export class ChartGenderComponent implements OnInit {
   margin;
   g;
   isLoading = true;
+  tweets= [];
 
   // chart specific implementation
   r = 100;
@@ -33,6 +34,7 @@ export class ChartGenderComponent implements OnInit {
         this.data[0].value = 0;
         this.data[1].value = 0;
         this.data[2].value = 0;
+        this.tweets = rawTweets.result;
         for(let rawTweetIndex in rawTweets.result){
           //console.log(rawTweets.result[rawTweetIndex].place.country_code);
           // count number of tweet for this country if not null
@@ -120,7 +122,10 @@ export class ChartGenderComponent implements OnInit {
             return "translate(" + arc.centroid(d) + ")";  
         })
         .attr("text-anchor", "middle") // align the text to middle 
-        .text(function(d, i) { return chartScope.data[i].label; });  // get and display the label from dataset
+        .text(function(d, i) { 
+          let percentage = chartScope.data[i].value/chartScope.tweets.length;
+          return chartScope.data[i].label+" ("+Math.round(percentage*10000)/100+"%)"; 
+        });  // get and display the label from dataset
         
   }
 

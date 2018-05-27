@@ -65,7 +65,7 @@
         <mat-header-cell *matHeaderCellDef> Action </mat-header-cell>
         <mat-cell *matCellDef="let element" fxLayout="row" fxLayoutAlign="start center" > 
           <button mat-icon-button class="action-button edit" (click)="updateHateWord(element.word, element.category, element.similarTo)"><mat-icon>edit</mat-icon></button>
-          <button mat-icon-button class="action-button delete"><mat-icon>delete</mat-icon></button>
+          <button mat-icon-button class="action-button delete" (click)="deleteHateWord(element.word)"><mat-icon>delete</mat-icon></button>
           <!-- {{element.action}} {{element.position}}  -->
         </mat-cell>
       </ng-container>

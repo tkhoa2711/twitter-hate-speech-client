@@ -129,6 +129,20 @@ export class ManageKeywordComponent implements OnInit {
     // console.log(filterData.endDate.valueOf());
   }
 
+  deleteHateWord(paramKeyword:String){
+    let deleteKeywordPromise = this.manageKeywordService.deleteKeyword(paramKeyword);
+    deleteKeywordPromise.then(requestResult => {
+      //let result = requestResult.json();
+      this.refreshDataSource();
+      console.log("completed");
+      this.result = 'success';
+    }).catch(function(e) {
+      console.log('Error: ', );
+      this.result = 'error';
+      //throw e;
+    });
+  }
+
 }
 
 export interface Element {

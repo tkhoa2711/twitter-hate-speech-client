@@ -1,7 +1,6 @@
 # twitter-hate-speech-client
 The client interface for our Twitter hate speech project
 
-
 Installation Guide
 1. Install NPM (https://www.npmjs.com/get-npm)
 2. Open Terminal/console

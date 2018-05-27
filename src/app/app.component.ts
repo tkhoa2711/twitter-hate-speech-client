@@ -6,6 +6,7 @@ import { DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE } from '@angular/materia
 import { HttpClient } from '@angular/common/http';
 
 import { AppService } from './app.service';
+import { AppConfig } from './app.config';
 
 @Component({
   selector: 'app-root',
@@ -57,7 +58,8 @@ export class AppComponent implements OnInit {
   constructor(private appService: AppService,
               private _element: ElementRef, 
               private formBuilder: FormBuilder,
-              private adapter: DateAdapter<any>){
+              private adapter: DateAdapter<any>,
+              private appConfig: AppConfig){
     //this.host = D3.select(this._element.nativeElement);
     this.createForm();
     this.adapter.setLocale('en-gb');

@@ -7,10 +7,10 @@
       <mat-icon>public</mat-icon>
       Map
     </button>
-    <button mat-button>
+    <a mat-button href="{{appConfig.API_URL}}/tweets/export" target="_blank" >
       <mat-icon>get_app</mat-icon>
       Export
-    </button>
+    </a>
     <button mat-button [routerLink]="['/admin']">
       <mat-icon>settings</mat-icon>
       Admin

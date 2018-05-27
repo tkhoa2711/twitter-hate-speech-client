@@ -30,4 +30,13 @@ export class ManageKeywordService{
         let submitKeywordPromise = this._http.post(`${this.appConfig.API_URL}/hatewords`, hatewordData , { withCredentials: true }).toPromise();
         return submitKeywordPromise;
     }
+
+    deleteKeyword(keyword: String): Promise<any>{
+        //let submitKeywordPromise = this._http.get(`${this.appConfig.API_URL}/hatewords`, { withCredentials: true }).toPromise();
+        let deleteKeywordPromise = this._http.delete(`${this.appConfig.API_URL}/hatewords?word=${keyword}` ).toPromise();
+        return deleteKeywordPromise;
+        //let deleteKeywordPromise = this._http.request('delete',`${this.appConfig.API_URL}/hatewords?word=${keyword}` ).toPromise();
+        //return deleteKeywordPromise;
+        //http.request('delete', url, { body: { ... } });
+    }
 }
