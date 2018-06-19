@@ -26,13 +26,17 @@ export class HeatMapService{
 
     getMapData(): Observable<any>{
        //setTimeout(this._http.get('http://localhost:5000/'),5000);
-        return this._http.get(`${this.appConfig.MAP_DATA_URL}/topojson/world.json`)
+        /*return this._http.get(`${this.appConfig.MAP_DATA_URL}/topojson/world.json`)
+            .map(this.extractData)
+            .catch(this.handleError);*/
+        return this._http.get(`/assets/topojson/world.json`)
             .map(this.extractData)
             .catch(this.handleError);
     }
 
     getStatesMapData(countryId:String): Promise<any> {
-        let statesMapDataPromise = this._http.get(`${this.appConfig.MAP_DATA_URL}/topojson/provinces/provinces_${countryId}.json`).toPromise();
+        /*let statesMapDataPromise = this._http.get(`${this.appConfig.MAP_DATA_URL}/topojson/provinces/provinces_${countryId}.json`).toPromise();*/
+        let statesMapDataPromise = this._http.get(`/assets/topojson/provinces/provinces_${countryId}.json`).toPromise();
         return statesMapDataPromise;
     }
 
