@@ -1,4 +1,4 @@
-<div class="inner-container">
+<div class="inner-container" *ngIf="this.isLoggedIn">
   <h1>Manage Keyword</h1>
   <mat-card class="hateword-form-container" [class.show]="(this.mode!='view')">
     <div class="form-result" [class.show]="this.result!=''" [class.error]="this.result!='success'" [innerHtml]=[this.result]></div>
@@ -75,4 +75,23 @@
     </mat-table>
   
   </div>
+</div>
+
+
+<div class="inner-container" *ngIf="!this.isLoggedIn">
+  <h1>Login</h1>
+  <mat-card class="hateword-form-container" [class.show]="!this.isLoggedIn">
+    <div class="form-result" [class.show]="this.result!=''" [class.error]="this.result!='success'" [innerHtml]=[this.result]></div>
+    <form [formGroup]="loginForm" fxLayout="column" class="hateword-form" (ngSubmit)="login(loginForm.value)">
+        <mat-form-field>
+          <input matInput name="username" class="input-username" placeholder="Username" value="" [formControl]="loginForm.controls['username']" required>
+        </mat-form-field>
+        <mat-form-field>
+          <input matInput name="password" class="input-password" placeholder="Password" value="" [formControl]="loginForm.controls['password']">
+        </mat-form-field>
+        <br>
+        <button mat-raised-button class="btn-submit" [class.disabled]="!loginForm.valid" color="primary" type="submit" [disabled]="!loginForm.valid" >Login</button>
+        <!-- <button mat-button class="btn-cancel" color="accent" type="button" (click)="resetLoginForm()">Cancel</button> -->
+      </form>
+  </mat-card>
 </div>

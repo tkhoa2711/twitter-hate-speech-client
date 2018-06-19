@@ -39,4 +39,8 @@ export class ManageKeywordService{
         //return deleteKeywordPromise;
         //http.request('delete', url, { body: { ... } });
     }
+
+    getLoginStatus():boolean{
+        return false;
+    }
 }

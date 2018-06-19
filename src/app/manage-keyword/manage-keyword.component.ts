@@ -17,8 +17,10 @@ export class ManageKeywordComponent implements OnInit {
   ];
 
   mode = 'view';
+  isLoggedIn = false;
 
   hateWordForm: FormGroup;
+  loginForm: FormGroup;
   result = '';
  
 
@@ -29,7 +31,8 @@ export class ManageKeywordComponent implements OnInit {
 
   ngOnInit() {
     this.mode = 'view';
-    this.refreshDataSource();
+    this.isLoggedIn = this.manageKeywordService.getLoginStatus();
+    //this.refreshDataSource();
   }
 
   refreshDataSource(){
@@ -73,6 +76,10 @@ export class ManageKeywordComponent implements OnInit {
       similar_to: ['']/*,
       keywords: new FormControl('', []),
       hashtags: [''], // <--- the FormControl called "name"*/
+    });
+    this.loginForm = this.formBuilder.group({
+      username: ['', Validators.required],
+      password: ['', Validators.required]
     });
   }
   resetHateWordForm(){

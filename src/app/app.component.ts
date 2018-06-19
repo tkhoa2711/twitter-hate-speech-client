@@ -2,6 +2,7 @@ import { Component, ElementRef, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, FormControl, Validators } from '@angular/forms';
 import { MAT_MOMENT_DATE_FORMATS, MomentDateAdapter } from '@angular/material-moment-adapter';
 import { DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE } from '@angular/material/core';
+import { Router,NavigationEnd } from '@angular/router';
 
 import { HttpClient } from '@angular/common/http';
 
@@ -30,6 +31,7 @@ export class AppComponent implements OnInit {
   host;
   svg;
   showSideMenu: Boolean = true;
+  currentUrl = '/';
 
   // selectedGenders =[
   //   {id: 'M', label: 'Male'},
@@ -59,10 +61,19 @@ export class AppComponent implements OnInit {
               private _element: ElementRef, 
               private formBuilder: FormBuilder,
               private adapter: DateAdapter<any>,
+              private router: Router,
               private appConfig: AppConfig){
     //this.host = D3.select(this._element.nativeElement);
     this.createForm();
     this.adapter.setLocale('en-gb');
+    this.router.events.subscribe(
+      (event: any) => {
+        if (event instanceof NavigationEnd) {
+          this.currentUrl = this.router.url;
+          console.log(this.router.url);
+        }
+      }
+    );
   }
 
   ngOnInit(){

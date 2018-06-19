@@ -3,11 +3,11 @@
     <h1>{{this.title}}</h1>
   </a>
   <div class="menu">
-    <button mat-button>
+    <button mat-button [routerLink]="['/']">
       <mat-icon>public</mat-icon>
       Map
     </button>
-    <a mat-button href="{{appConfig.API_URL}}/tweets/export" target="_blank" >
+    <a mat-button href="{{appConfig.API_URL}}/tweets/export" target="_blank"  *ngIf="(currentUrl=='/')" >
       <mat-icon>get_app</mat-icon>
       Export
     </a>
@@ -15,7 +15,7 @@
       <mat-icon>settings</mat-icon>
       Admin
     </button>
-    <button mat-button (click)="toggleSideMenu()">
+    <button mat-button (click)="toggleSideMenu()" *ngIf="(currentUrl=='/')">
       <mat-icon>filter_list</mat-icon>
       Filter
     </button>
