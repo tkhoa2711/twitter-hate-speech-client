@@ -150,6 +150,12 @@ export class ManageKeywordComponent implements OnInit {
     });
   }
 
+  login(loginFormData:any){
+    console.log(loginFormData);
+    
+  }
+
+
 }
 
 export interface Element {

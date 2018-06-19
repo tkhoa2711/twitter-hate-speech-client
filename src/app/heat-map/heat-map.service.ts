@@ -42,6 +42,8 @@ export class HeatMapService{
             let rawTweets = requestResult.json();
             this.tweets = rawTweets;
             this.tweetsDownloaded.emit(rawTweets);
+        }).catch(function(e) {
+            console.log('Error: ', e);
         });
         return twitterDataPromise;
     }

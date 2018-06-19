@@ -160,6 +160,7 @@ export class HeatMapComponent implements OnInit, OnDestroy {
   getTwitterData(){
     this.countryTweetCount = [];
     let twitterDataPromise = this._mapService.getTwitterData();
+    let heatMapComponentScope = this;
     twitterDataPromise.then(requestResult => {
       let rawTweets = requestResult.json();
       let cleanedData = [];
@@ -190,7 +191,13 @@ export class HeatMapComponent implements OnInit, OnDestroy {
 
       this.drawCountry(this,"world");
       this.updateDots(cleanedData);
-    });
+    }).catch((e) => {
+      console.log('Error: ', e);
+      
+      console.log(this);
+      this.drawCountry(this,"world");
+      this.updateDots([]);
+    });;
   }
 
   setup() {

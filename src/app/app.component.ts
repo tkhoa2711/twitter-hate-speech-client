@@ -70,7 +70,7 @@ export class AppComponent implements OnInit {
       (event: any) => {
         if (event instanceof NavigationEnd) {
           this.currentUrl = this.router.url;
-          console.log(this.router.url);
+          // console.log(this.router.url);
         }
       }
     );

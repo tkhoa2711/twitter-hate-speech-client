@@ -41,6 +41,14 @@ export class ManageKeywordService{
     }
 
     getLoginStatus():boolean{
+        /*let loginStatusPromise = this._http.post(`${this.appConfig.API_URL}/auth/is_logged_in`, {} , { withCredentials: true }).toPromise();
+        return loginStatusPromise;*/
         return false;
+    }
+
+    login(loginData: any):boolean{
+        /*let loginPromise = this._http.post(`${this.appConfig.API_URL}/auth/login`, loginData , { withCredentials: true }).toPromise();
+        return loginPromise;*/
+        return true;
     }
 }

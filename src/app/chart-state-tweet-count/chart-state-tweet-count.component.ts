@@ -56,29 +56,31 @@ export class ChartStateTweetCountComponent implements OnInit {
       this.viewModeSubscription = this._mapService.viewModeChange.subscribe(
         (viewMode) => {
           var rawTweets = this._mapService.getDownloadedTweets();
-          if( (viewMode == 'country') && (rawTweets.result.length>0)){
-            this.data= [];
-            var rawData = [];
-            let currentCountry = this._mapService.getCurrentCountry();
-            console.log(currentCountry);
-            for(let rawTweetIndex in rawTweets.result){
-              if((rawTweets.result[rawTweetIndex].place.state!=null) && 
-                 (rawTweets.result[rawTweetIndex].place.country_code==currentCountry)) {
-                let stateName = rawTweets.result[rawTweetIndex].place.state;
-                rawData[stateName] = (rawData[stateName]==null)?1:(rawData[stateName]+1);
+          if(rawTweets.length>0){
+            if( (viewMode == 'country') && (rawTweets.result.length>0)){
+              this.data= [];
+              var rawData = [];
+              let currentCountry = this._mapService.getCurrentCountry();
+              console.log(currentCountry);
+              for(let rawTweetIndex in rawTweets.result){
+                if((rawTweets.result[rawTweetIndex].place.state!=null) && 
+                  (rawTweets.result[rawTweetIndex].place.country_code==currentCountry)) {
+                  let stateName = rawTweets.result[rawTweetIndex].place.state;
+                  rawData[stateName] = (rawData[stateName]==null)?1:(rawData[stateName]+1);
+                }
               }
+              for(let rawDataIndex in rawData){
+                console.log(rawDataIndex);
+                this.data.push({"name":rawDataIndex, "value":rawData[rawDataIndex]});
+              }
+              this.data = this.data.sort(function (a, b) {
+                return D3.ascending(a.value, b.value);
+              })
+              //console.log(rawData);
+              this.setup();
+              this.buildSVG();
+              this.isLoading=false;
             }
-            for(let rawDataIndex in rawData){
-              console.log(rawDataIndex);
-              this.data.push({"name":rawDataIndex, "value":rawData[rawDataIndex]});
-            }
-            this.data = this.data.sort(function (a, b) {
-              return D3.ascending(a.value, b.value);
-            })
-            //console.log(rawData);
-            this.setup();
-            this.buildSVG();
-            this.isLoading=false;
           }
       });
     
